@@ -17,7 +17,7 @@ router.post(
 
 router.post(
   '/change-password',
-  auth(USER_ROLE.user as TURole, USER_ROLE.admin as TURole),
+  auth(USER_ROLE.student as TURole, USER_ROLE.admin as TURole),
   // validateRequest(AuthValidation.changePasswordValidationSchema),
   AuthControllers.forgotPassword,
 );

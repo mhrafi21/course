@@ -6,7 +6,7 @@ export interface IUser extends Document {
     confirmPassword: string;
     needsPasswordChange?: boolean;
     resetPasswordToken?: string;
-    role?: string;
+    role?: 'student' | 'instructor' | 'admin';
     resetPasswordExpires?: Date;
 }
 

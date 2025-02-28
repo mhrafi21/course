@@ -1,6 +1,7 @@
 export const  USER_ROLE = {
     admin: 'admin',
-    user: 'user',
+    instructor: "instructor",
+    student: "student"
 } as const;
 
 export type TURole = keyof typeof USER_ROLE;

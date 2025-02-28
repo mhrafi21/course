@@ -61,7 +61,6 @@ const loginUserIntoDB = async (payload: IUser) => {
 const forgotPasswordFromDB = async (payload: string) => {
   // logic here
 
-
   const user = await User.findOne({ email: payload });
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
@@ -72,7 +71,7 @@ const forgotPasswordFromDB = async (payload: string) => {
   user.resetPasswordToken = resetToken;
   user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
   await user.save();
-  const resetUrl = `http://localhost:5000/reset-password/${resetToken}`;
+  const resetUrl = `http://localhost:3000/api/auth/reset-password?token=${resetToken}`;
 
   // send email
   const result = await sendEmail(user.email, "Password Reset", `Click here to reset your password: ${resetUrl}`);

@@ -28,8 +28,8 @@ const userSchema = new Schema<IUser>({
     resetPasswordToken: String,
     role: {
         type: String,
-        enum: ['admin', 'user'],
-        default: 'user',
+        enum: ['student', 'instructor', 'admin'],
+        default: 'student',
     },
     resetPasswordExpires: Date,
 }, { timestamps: true });
