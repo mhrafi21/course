@@ -10,7 +10,7 @@ const registrationUserIntoDB = async (payload: IUser) => {
   // logic here
 
 
-  const { username, email, password, confirmPassword } = payload;
+  const { username, email, password, confirmPassword, role } = payload;
 
   if (password !== confirmPassword) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Passwords do not match');
@@ -30,6 +30,8 @@ const registrationUserIntoDB = async (payload: IUser) => {
     email,
     password: hashedPassword,
     confirmPassword: hashedPassword,
+    role,
+    needsPasswordChange: true, // set to true for first login
   });
 
   return result;

@@ -10,10 +10,19 @@ const courseSchema = new Schema<ICourse>({
         type: String,
         required: true
     },
+    price: {
+        type: Number,
+        required: true
+    },
     instructor: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
+    },
+    status: {
+        type: String,
+        enum: ["pending", "approved"],
+        default: "pending" // required: true, // Uncomment when adding required field. Instructor approval is mandatory.
     },
     studentEnrolled: [
         {

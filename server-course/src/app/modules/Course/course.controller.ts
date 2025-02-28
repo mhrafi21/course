@@ -47,6 +47,51 @@ const getCourseById = catchAsync(async(req,res) => {
     })
 })
 
+const getCourseByInstructorId = catchAsync(async(req,res)=>{
+    const {id} = req.user;
+    const result = await courseServices.getCourseByInstructorIdFromDB(id as string);
+    sendResponse(res,{
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Courses retrieved successfully!",
+        data: result
+    })
+})
+
+const getCourseByStudentId = catchAsync(async(req,res) => {
+    const {id} = req.user;
+    const result = await courseServices.getCourseByStudentIdFromDB(id as string);
+    sendResponse(res,{
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Courses retrieved successfully!",
+        data: result
+    })
+})
+
+const approvedCourse = catchAsync(async(req,res) => {
+    const result = await courseServices.approvedCourseInDB(req.params.id);
+    
+    if (!result) {
+        return sendResponse(res, {
+            statusCode: httpStatus.NOT_FOUND,
+            success: false,
+            message: "Course not found!"
+            ,
+            data:null
+        })
+    }
+    
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Course approved successfully!",
+        data: result
+    })
+})
+
+
+
 const updateCourseById = catchAsync(async(req,res) => {
     const { title, description } = req.body;
     const result = await courseServices.updateCourseInDB(req.params.id, {title, description} as ICourse);
@@ -96,6 +141,9 @@ export const courseControllers = {
     getCourses,
     getCourseById,
     updateCourseById,
-    deleteCourseById
+    deleteCourseById,
+    getCourseByInstructorId,
+    getCourseByStudentId,
+    approvedCourse
 }
 

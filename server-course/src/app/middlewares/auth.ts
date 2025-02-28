@@ -24,8 +24,6 @@ const auth = (...requiredRoles: TURole[]) => {
     }
 
     const decoded = jwt.verify(token, config.jwt_access_secret) as JwtPayload;
-    console.log(decoded.role, requiredRoles)
-
     if (!requiredRoles.includes(decoded.role)) {
       throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized!');
     }

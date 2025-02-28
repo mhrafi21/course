@@ -13,6 +13,23 @@ const getCoursesFromDB = async() => {
     return result;
 }
 
+const getCourseByInstructorIdFromDB = async(instructorId: string) => {
+    // logic here
+    const result = await Course.find({ instructor: instructorId });
+    return result;
+}
+
+const getCourseByStudentIdFromDB = async(studentId: string) => {
+    // logic here
+    const result = await Course.find({ studentEnrolled: studentId }).populate('instructor', "username");
+    return result;
+}
+
+const approvedCourseInDB = async(courseId : string)=>{
+    const course = await Course.findById(courseId,{status: 'approved'});
+    return course;
+}
+
 const getCourseByIdFromDB = async(id: string) => {
     // logic here
     const result = await Course.findById(id);
@@ -36,6 +53,9 @@ export const courseServices = {
     getCoursesFromDB,
     getCourseByIdFromDB,
     updateCourseInDB,
-    deleteCourseFromDB
+    deleteCourseFromDB,
+    getCourseByInstructorIdFromDB,
+    getCourseByStudentIdFromDB,
+    approvedCourseInDB
 
 }
