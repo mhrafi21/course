@@ -17,7 +17,7 @@ const auth = (...requiredRoles: TURole[]) => {
     }
   
     const token = authorization.split(' ')[1];
-    console.log(token);
+   
 
     if(!config.jwt_access_secret){
       throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'AccessToken secret, Internal Server Error');

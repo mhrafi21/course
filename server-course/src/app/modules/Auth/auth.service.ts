@@ -48,7 +48,7 @@ const loginUserIntoDB = async (payload: IUser) => {
     throw new AppError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
 
-  const userObj = { username: user.username, email: user.email, role: user.role }
+  const userObj = { id: user._id ,username: user.username, email: user.email, role: user.role }
 
   // generate tokens
   const accessToken = generateAccessToken(userObj as TTokens);
