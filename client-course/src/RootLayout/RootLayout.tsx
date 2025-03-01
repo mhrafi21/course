@@ -1,10 +1,13 @@
+import Navbar from '@/components/ui/Navbar/Navbar'
 import React from 'react'
 import { Outlet } from 'react-router'
 
 const RootLayout = () => {
   return (
     <div>
-        <header>Header</header>
+        <header>
+          <Navbar />
+        </header>
         <main><Outlet /></main>
         <footer>Footer</footer>
     </div>

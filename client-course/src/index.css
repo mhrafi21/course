@@ -2,16 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* body {
   font-family: "Open Sans", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
+  font-weight: 400;
   font-variation-settings: "wdth" 100;
-  line-height: 25px;
-}
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+  background-color: #f8f9fa;
+} */
 
 @layer base {
   :root {
     --radius: 0.5rem;
   }
+
+  body{
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-weight: 400;
+    font-size:14px;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+  }
+  
+  
+}
+
+@layer components {
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+}
+
+@layer utilities {
+  .text-center {
+    text-align: center;
+  }
+
 }
