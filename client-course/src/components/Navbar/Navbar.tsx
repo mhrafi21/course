@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { motion } from "framer-motion"; // Import Framer Motion
+import UserDropdownMenu from "@/components/UserDropDownMenu/UserDropDownMenu";
 
 const Navbar: React.FC = () => {
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
@@ -26,7 +27,7 @@ const Navbar: React.FC = () => {
         </NavLink>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6">
+        <div className="hidden lg:flex items-center space-x-6">
           <NavLink
             to="/"
             className={({ isActive }) =>
@@ -126,20 +127,18 @@ const Navbar: React.FC = () => {
             </NavLink>
             </DropdownMenuContent>
           </DropdownMenu>
+           {/* Login User DropdownMenu */}
+        <UserDropdownMenu />
+        {/* Login User DropdownMenu */}
         </div>
 
-        {/* Search & Auth Buttons */}
-        <div className="hidden md:flex items-center space-x-4">
-          <Input placeholder="Search courses..." className="w-48" />
-          <Button variant="outline">Login</Button>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            Sign Up
-          </Button>
-        </div>
+       
+
+      
 
         {/* Mobile Menu Button */}
         <Sheet>
-          <SheetTrigger className="md:hidden text-gray-700">
+          <SheetTrigger className="lg:hidden text-gray-700">
             <Menu size={24} />
           </SheetTrigger>
           <SheetContent side="left" className="w-64">
