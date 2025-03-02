@@ -1,105 +1,61 @@
 import { useGetCoursesQuery } from "@/redux/baseApi";
-import React, { useState } from "react";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"; // Import Shadcn pagination components
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"; // Import Shadcn card components
+import React, { useEffect } from "react";
+import { useSearchParams } from "react-router";
 import { ICourse } from "@/interface";
+import CourseCard from "./CourseCard";
+import CustomPagination from "@/components/CustomPagination/CustomPagination";
+import { CardSkeleton } from "@/components/Skeleton/Skeleton";
+import { Card } from "@/components/ui/card";
 
 const Course: React.FC = () => {
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 6; // Adjust as needed for card layout
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Get values from URL, defaulting to page 1 & limit 6
+  const page = Number(searchParams.get("page")) || 1;
+  const limit = Number(searchParams.get("limit")) || 6;
 
   const {
     data: courses,
     isLoading,
     isError,
   } = useGetCoursesQuery({
-    page: page,
-    limit: itemsPerPage,
+    page,
+    limit,
   });
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (isError) {
-    return <p>Error loading courses.</p>;
-  }
-
-  if (!courses || !courses.data) {
-    return <p>No courses found.</p>;
-  }
-
-  const courseData = courses.data.data;
-
-  const totalItems = courses.data.totalData;
-
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  const handlePageChange = (newPage: number) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setPage(newPage);
-    }
-  };
+  useEffect(() => {
+    // Ensure URL stays updated with current page & limit
+    setSearchParams({ page: String(page), limit: String(limit) });
+  }, [page, limit, setSearchParams]);
 
   return (
     <div className="container py-4">
-      <div className="mb-4">
-        <h1>Course Page</h1>
-        <p>This is the course page.</p>
-      </div>
-
+      {isError && <p>Error loading courses.</p>}
+      {!courses ||
+        !courses.data ||
+        (courses.data.data.length < 0 && <p>No courses found.</p>)}
+      <h1 className="mb-4">Course Page</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {courseData.map((course: ICourse) => (
-          <Card key={course._id}>
-            <CardHeader>
-              <CardTitle>{course.title}</CardTitle>
-              <CardDescription>${course.price}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>{course.description}</p>
-              {/* Add more content as needed */}
-            </CardContent>
-          </Card>
+        {isLoading &&
+          Array.from({ length: limit }, (_, index) => index).map((_, index) => (
+            <Card>
+              <CardSkeleton key={index} />
+            </Card>
+          ))}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {courses?.data?.data.map((course: ICourse) => (
+          <CourseCard key={course._id} course={course} />
         ))}
       </div>
-
-      <Pagination className="mt-4 justify-center">
-        <PaginationPrevious
-          onClick={() => handlePageChange(page - 1)}
-          aria-disabled={page === 1}
-        />
-        <PaginationContent>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-            (pageNumber) => (
-              <PaginationItem key={pageNumber}>
-                <PaginationLink
-                  isActive={pageNumber === page}
-                  onClick={() => handlePageChange(pageNumber)}
-                >
-                  {pageNumber}
-                </PaginationLink>
-              </PaginationItem>
-            )
-          )}
-        </PaginationContent>
-        <PaginationNext
-          onClick={() => handlePageChange(page + 1)}
-          aria-disabled={page === totalPages}
-        />
-      </Pagination>
+      {/* Reusable Pagination Component */}
+      <CustomPagination
+        currentPage={page}
+        totalPages={Math.ceil(courses?.data?.totalData / limit)}
+        onPageChange={(newPage) => {
+          setSearchParams({ page: String(newPage), limit: String(limit) });
+        }}
+      />
     </div>
   );
 };

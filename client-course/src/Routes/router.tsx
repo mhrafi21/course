@@ -24,7 +24,7 @@ const router = createBrowserRouter([
         Component: () => <Home />,
       },
       {
-        path: "/courses/",
+        path: "/courses",
         Component: () => <Course />
       },
       {

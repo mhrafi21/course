@@ -1,11 +1,20 @@
-import { Button } from '@/components/ui/button'
 import React from 'react'
+import Hero from './Hero/Hero'
+import Features from './Features/Features'
+import PopularCourse from './PopularCourse/PopularCourse'
+import CallToAction from './CalToAction/CallToAction'
+import Faq from './Faq/Faq'
 
 const Home = () => {
   return (
-    <div>
-      <Button>CLick me </Button>
-    </div>
+    <>
+      <Hero />
+      <Features />
+      <PopularCourse />
+      <Faq />
+      <CallToAction />
+
+    </>
   )
 }
 

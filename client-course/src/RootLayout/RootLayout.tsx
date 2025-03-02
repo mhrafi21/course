@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import React from "react";
 import { Outlet } from "react-router";
@@ -12,7 +13,9 @@ const RootLayout: React.FC = () => {
         {/* Render the children components */}
         <Outlet />
       </main>
-      <footer>Footer</footer>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 };
