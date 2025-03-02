@@ -1,10 +1,7 @@
-"use client";
-
 import React, { useState } from "react";
 import { NavLink } from "react-router";
 import { Menu, ChevronDown, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -20,7 +17,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
-      <div className="container mx-auto flex justify-between items-center p-4">
+      <div className="container mx-auto flex justify-between items-center h-20">
         {/* Logo */}
         <NavLink to="/" className="text-2xl font-bold text-blue-600">
           CourseHub
@@ -38,11 +35,20 @@ const Navbar: React.FC = () => {
           >
             Home
           </NavLink>
-
+          <NavLink
+            to="/courses"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-zinc-100 rounded-lg p-2 text-black text-sm"
+                : "text-gray-700 p-2 hover:text-blue-600"
+            }
+          >
+            Courses
+          </NavLink>
           {/* Courses Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center text-gray-700 hover:bg-zinc-100 p-2 rounded-lg">
-              Courses <ChevronDown size={16} className="ml-1" />
+              Categories <ChevronDown size={16} className="ml-1" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               <DropdownMenuItem asChild>
@@ -128,7 +134,9 @@ const Navbar: React.FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
            {/* Login User DropdownMenu */}
-        <UserDropdownMenu />
+            <div className=''>
+            <UserDropdownMenu />
+            </div>
         {/* Login User DropdownMenu */}
         </div>
 

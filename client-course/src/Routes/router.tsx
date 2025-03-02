@@ -9,6 +9,8 @@ import RootLayout from "../RootLayout/RootLayout";
 import Home from "../pages/frontendPages/Home/Home";
 import Settings from "../pages/DahboardPages/Settings/Settings";
 import Reports from "../pages/DahboardPages/Reports/Reports";
+import Cart from "@/pages/frontendPages/Cart/Cart";
+import Course from "@/pages/frontendPages/Course/Course";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
         path: "/",
         Component: () => <Home />,
       },
+      {
+        path: "/courses",
+        Component: () => <Course />
+      },
+      {
+        path: "/cart/",
+        Component: () => <Cart />
+      }
     ],
   },
   {
