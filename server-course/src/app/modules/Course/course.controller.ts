@@ -5,8 +5,8 @@ import { courseServices } from "./course.services";
 import { ICourse } from "./course.interface";
 
  const createCourse = catchAsync(async(req,res) => {
-    const { title, description } = req.body;
-    const result = await courseServices.createCourseIntoDB({title, description, instructor: req.user.id} as ICourse);
+    const { title, description,price } = req.body;
+    const result = await courseServices.createCourseIntoDB({title, description,price, instructor: req.user.id} as ICourse);
     sendResponse(res, {
         statusCode: httpStatus.CREATED,
         success: true,

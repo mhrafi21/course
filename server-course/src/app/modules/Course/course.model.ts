@@ -4,6 +4,7 @@ import { ICourse } from "./course.interface";
 const courseSchema = new Schema<ICourse>({
     title: {
         type: String,
+        unique: true, // required: true, // Uncomment when adding required field. Unique title for each course.
         required: true
     },
     description: {

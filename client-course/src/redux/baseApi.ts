@@ -1,73 +1,59 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-interface UpdateCartResponse {
-  success: boolean;
-  cartId?: string;
-
-  // Add other properties as needed
-}
-
 // Update the UpdateCartMutationResult type definition
-export type UpdateCartMutationResult =
-  | {
-      data: UpdateCartResponse;
-    }
-  | {
-      error: unknown;
-    };
 
 /// https://backend-campers-shop.vercel.app/api/v1
 
 export const baseApi = createApi({
   reducerPath: "baseApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://backend-campers-shop.vercel.app/api/v1" }),
-  tagTypes: ["Products", "Carts"],
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
+  tagTypes: ["courses", "Carts"],
   endpoints: (builder) => ({
     createProduct: builder.mutation({
       query: (product) => {
         return {
-          url: "/products/create-product",
+          url: "/courses/create-course",
           method: "POST",
           body: product,
         };
       },
-      invalidatesTags: [{ type: "Products", id: "LIST" }],
+      invalidatesTags: [{ type: "courses", id: "LIST" }],
     }),
 
-    getProducts: builder.query({
+    getCourses: builder.query({
       query: (params) => {
         return {
-          url: "/products",
+          url: "/courses",
           method: "GET",
           params,
         };
       },
-      providesTags: [{ type: "Products", id: "LIST" }],
+      providesTags: [{ type: "courses", id: "LIST" }],
     }),
     getProductById: builder.query({
       query: (id) => ({
-        url: `/products/${id}`,
+        url: `/courses/${id}`,
         method: "GET",
       }),
-      providesTags: (id) => [{ type: "Products", id }],
+      providesTags: (id) => [{ type: "courses", id }],
     }),
     updateProductById: builder.mutation({
       query: ({ productId, ...product }) => ({
-        url: `/products/${productId}`,
+        url: `/courses/${productId}`,
         method: "PUT",
         body: product,
       }),
-      invalidatesTags: ({ _id }) => [{ type: "Products", id: _id }],
+      invalidatesTags: ({ _id }) => [{ type: "courses", id: _id }],
     }),
 
     deleteSingleProduct: builder.mutation({
       query: (id) => {
         return {
-          url: `/products/${id}`,
+          url: `/courses/${id}`,
           method: "DELETE",
         };
       },
-      invalidatesTags: ({ _id }) => [{ type: "Products", id: _id }],
+      invalidatesTags: ({ _id }) => [{ type: "courses", id: _id }],
     }),
    
   }),
@@ -75,7 +61,7 @@ export const baseApi = createApi({
 
 export const {
   useCreateProductMutation,
-  useGetProductsQuery,
+  useGetCoursesQuery,
   useGetProductByIdQuery,
   useUpdateProductByIdMutation,
   useDeleteSingleProductMutation,
