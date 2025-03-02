@@ -1,8 +1,7 @@
 import React from 'react'
-
-const CourseDetails = () => {
+const CourseDetails:React.FC = () => {
   return (
-    <div>CourseDetails</div>
+    <div>:React.FC</div>
   )
 }
 

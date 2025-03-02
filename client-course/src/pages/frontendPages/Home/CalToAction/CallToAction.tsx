@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 
-const CallToAction = () => {
+const CallToAction:React.FC = () => {
   return (
     <div>
       {/* Call to Action Section */}

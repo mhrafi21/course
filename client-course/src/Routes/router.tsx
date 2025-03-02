@@ -11,6 +11,7 @@ import Settings from "../pages/DahboardPages/Settings/Settings";
 import Reports from "../pages/DahboardPages/Reports/Reports";
 import Cart from "@/pages/frontendPages/Cart/Cart";
 import Course from "@/pages/frontendPages/Course/Course";
+import SingleCourse from "@/pages/frontendPages/Course/SingleCourse/SingleCourse";
 
 const router = createBrowserRouter([
   {
@@ -24,8 +25,12 @@ const router = createBrowserRouter([
         Component: () => <Home />,
       },
       {
-        path: "/courses",
+        path: "/courses/",
         Component: () => <Course />
+      },
+      {
+        path: "/courses/:slug/",
+        Component: () => <SingleCourse />
       },
       {
         path: "/cart/",

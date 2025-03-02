@@ -30,9 +30,9 @@ export const baseApi = createApi({
       },
       providesTags: [{ type: "courses", id: "LIST" }],
     }),
-    getProductById: builder.query({
-      query: (id) => ({
-        url: `/courses/${id}`,
+    getCourseBySlug: builder.query({
+      query: (slug) => ({
+        url: `/courses/${slug}`,
         method: "GET",
       }),
       providesTags: (id) => [{ type: "courses", id }],
@@ -62,7 +62,7 @@ export const baseApi = createApi({
 export const {
   useCreateProductMutation,
   useGetCoursesQuery,
-  useGetProductByIdQuery,
+  useGetCourseBySlugQuery,
   useUpdateProductByIdMutation,
   useDeleteSingleProductMutation,
 } = baseApi;

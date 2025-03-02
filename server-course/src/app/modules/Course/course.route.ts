@@ -9,7 +9,7 @@ router.post("/create-course", auth(USER_ROLE.instructor as TURole, USER_ROLE.adm
 router.get("/", courseControllers.getCourses);
 router.get("/instructor", auth(USER_ROLE.instructor), courseControllers.getCourseByInstructorId);
 router.patch("/approve/:id", courseControllers.approvedCourse);
-router.get("/:id", courseControllers.getCourseById);
+router.get("/:slug", courseControllers.getCourseById);
 router.put("/:id", courseControllers.updateCourseById);
 router.delete("/:id", courseControllers.deleteCourseById);
 

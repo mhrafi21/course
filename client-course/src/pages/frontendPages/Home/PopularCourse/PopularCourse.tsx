@@ -1,9 +1,9 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import React from "react";
 
-const PopularCourse = () => {
+const PopularCourse:React.FC = () => {
   return (
     <div>
       {/* Popular Courses Section */}

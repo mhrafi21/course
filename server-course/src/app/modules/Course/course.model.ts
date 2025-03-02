@@ -15,6 +15,10 @@ const courseSchema = new Schema<ICourse>({
         type: Number,
         required: true
     },
+    slug: {
+        type: String,
+        required: true
+    },
     instructor: {
         type: Schema.Types.ObjectId,
         ref: "User",

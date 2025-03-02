@@ -35,9 +35,9 @@ const approvedCourseInDB = async (courseId: string) => {
     return course;
 }
 
-const getCourseByIdFromDB = async (id: string) => {
+const getCourseByIdFromDB = async (slug: string) => {
     // logic here
-    const result = await Course.findById(id);
+    const result = await Course.findOne({slug});
     return result;
 }
 

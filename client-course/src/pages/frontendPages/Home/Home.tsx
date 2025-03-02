@@ -5,7 +5,7 @@ import PopularCourse from './PopularCourse/PopularCourse'
 import CallToAction from './CalToAction/CallToAction'
 import Faq from './Faq/Faq'
 
-const Home = () => {
+const Home:React.FC = () => {
   return (
     <>
       <Hero />

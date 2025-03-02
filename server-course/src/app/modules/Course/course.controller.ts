@@ -3,10 +3,12 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { courseServices } from "./course.services";
 import { ICourse } from "./course.interface";
+import { generateSlug } from "../../utils/generateSlug";
 
- const createCourse = catchAsync(async(req,res) => {
-    const { title, description,price } = req.body;
-    const result = await courseServices.createCourseIntoDB({title, description,price, instructor: req.user.id} as ICourse);
+const createCourse = catchAsync(async (req, res) => {
+    const { title, description, price } = req.body;
+    const slug = generateSlug(title as string);
+    const result = await courseServices.createCourseIntoDB({ title, description, price, slug, instructor: req.user.id } as ICourse);
     sendResponse(res, {
         statusCode: httpStatus.CREATED,
         success: true,
@@ -15,10 +17,10 @@ import { ICourse } from "./course.interface";
     })
 });
 
-const getCourses = catchAsync(async(req,res) => {
+const getCourses = catchAsync(async (req, res) => {
     const { page, limit } = req.query;
-    const result = await courseServices.getCoursesFromDB({page,limit} as {page: string,limit: string});
-    
+    const result = await courseServices.getCoursesFromDB({ page, limit } as { page: string, limit: string });
+
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -27,19 +29,19 @@ const getCourses = catchAsync(async(req,res) => {
     })
 })
 
-const getCourseById = catchAsync(async(req,res) => {
-    const result = await courseServices.getCourseByIdFromDB(req.params.id);
-    
+const getCourseById = catchAsync(async (req, res) => {
+    const result = await courseServices.getCourseByIdFromDB(req.params.slug as string);
+
     if (!result) {
         return sendResponse(res, {
             statusCode: httpStatus.NOT_FOUND,
             success: false,
             message: "Course not found!"
             ,
-            data:null
+            data: null
         })
     }
-    
+
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -48,10 +50,10 @@ const getCourseById = catchAsync(async(req,res) => {
     })
 })
 
-const getCourseByInstructorId = catchAsync(async(req,res)=>{
-    const {id} = req.user;
+const getCourseByInstructorId = catchAsync(async (req, res) => {
+    const { id } = req.user;
     const result = await courseServices.getCourseByInstructorIdFromDB(id as string);
-    sendResponse(res,{
+    sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         message: "Courses retrieved successfully!",
@@ -59,10 +61,10 @@ const getCourseByInstructorId = catchAsync(async(req,res)=>{
     })
 })
 
-const getCourseByStudentId = catchAsync(async(req,res) => {
-    const {id} = req.user;
+const getCourseByStudentId = catchAsync(async (req, res) => {
+    const { id } = req.user;
     const result = await courseServices.getCourseByStudentIdFromDB(id as string);
-    sendResponse(res,{
+    sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         message: "Courses retrieved successfully!",
@@ -70,19 +72,19 @@ const getCourseByStudentId = catchAsync(async(req,res) => {
     })
 })
 
-const approvedCourse = catchAsync(async(req,res) => {
+const approvedCourse = catchAsync(async (req, res) => {
     const result = await courseServices.approvedCourseInDB(req.params.id);
-    
+
     if (!result) {
         return sendResponse(res, {
             statusCode: httpStatus.NOT_FOUND,
             success: false,
             message: "Course not found!"
             ,
-            data:null
+            data: null
         })
     }
-    
+
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -93,20 +95,20 @@ const approvedCourse = catchAsync(async(req,res) => {
 
 
 
-const updateCourseById = catchAsync(async(req,res) => {
+const updateCourseById = catchAsync(async (req, res) => {
     const { title, description } = req.body;
-    const result = await courseServices.updateCourseInDB(req.params.id, {title, description} as ICourse);
-    
+    const result = await courseServices.updateCourseInDB(req.params.id, { title, description } as ICourse);
+
     if (!result) {
         return sendResponse(res, {
             statusCode: httpStatus.NOT_FOUND,
             success: false,
             message: "Course not found!"
             ,
-            data:null
+            data: null
         })
     }
-    
+
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -115,19 +117,19 @@ const updateCourseById = catchAsync(async(req,res) => {
     })
 })
 
-const deleteCourseById = catchAsync(async(req,res) => {
+const deleteCourseById = catchAsync(async (req, res) => {
     const result = await courseServices.deleteCourseFromDB(req.params.id);
-    
+
     if (!result) {
         return sendResponse(res, {
             statusCode: httpStatus.NOT_FOUND,
             success: false,
             message: "Course not found!"
             ,
-            data:null
+            data: null
         })
     }
-    
+
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
