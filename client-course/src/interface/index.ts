@@ -1,5 +1,5 @@
 export interface ICourse {
-    _id?:string;
+    _id?: string;
     title: string;
     description: string;
     slug: string;
@@ -7,4 +7,26 @@ export interface ICourse {
     instructor?: string;
     studentEnrolled?: string[];
     status: "pending" | "approved"
+}
+
+export interface FormData {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    role: "instructor" | "student";
+    agreeToTerms: boolean
+}
+
+export interface IUser  {
+    _id?: string;
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    needsPasswordChange?: boolean;
+    resetPasswordToken?: string;
+    role?: 'student' | 'instructor' | 'admin';
+    resetPasswordExpires?: Date;
+    agreeToTerms: boolean
 }

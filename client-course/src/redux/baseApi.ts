@@ -1,3 +1,4 @@
+import { IUser } from "@/interface";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Update the UpdateCartMutationResult type definition
@@ -9,6 +10,16 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
   tagTypes: ["courses", "Carts"],
   endpoints: (builder) => ({
+
+    // signup
+    signup: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/signup",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+
     createProduct: builder.mutation({
       query: (product) => {
         return {

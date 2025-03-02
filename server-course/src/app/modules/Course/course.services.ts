@@ -7,6 +7,7 @@ const createCourseIntoDB = async (payload: ICourse) => {
     return result;
 }
 
+
 const getCoursesFromDB = async (payload: { page: string, limit: string }) => {
     // logic here
     const { page, limit } = payload;

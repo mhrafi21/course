@@ -19,6 +19,8 @@ const CustomPagination: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange,
 }) => {
+
+
   return (
     <Pagination className="mt-4 justify-center">
       <PaginationPrevious
@@ -26,21 +28,29 @@ const CustomPagination: React.FC<PaginationProps> = ({
         aria-disabled={currentPage === 1}
       />
       <PaginationContent>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
-          <PaginationItem key={pageNumber}>
-            <PaginationLink
-              isActive={pageNumber === currentPage}
-              onClick={() => onPageChange(pageNumber)}
-            >
-              {pageNumber}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+          (pageNumber) => (
+            <PaginationItem key={pageNumber}>
+              <PaginationLink
+                isActive={pageNumber === currentPage}
+                onClick={() => onPageChange(pageNumber)}
+              >
+                {pageNumber}
+              </PaginationLink>
+            </PaginationItem>
+          )
+        )}
       </PaginationContent>
-      <PaginationNext
+
+      {
+        currentPage < totalPages ?       <PaginationNext
         onClick={() => onPageChange(currentPage + 1)}
         aria-disabled={currentPage === totalPages}
-      />
+      /> :
+      <PaginationNext/>
+      }
+      
+
     </Pagination>
   );
 };

@@ -25,6 +25,7 @@ const userSchema = new Schema<IUser>({
         type: Boolean,
         default: false,
     },
+   
     resetPasswordToken: String,
     role: {
         type: String,
@@ -32,6 +33,9 @@ const userSchema = new Schema<IUser>({
         default: 'student',
     },
     resetPasswordExpires: Date,
+    agreeToTerms: {
+        type: Boolean,
+    }
 }, { timestamps: true });
 
 const  User = model<IUser>('User', userSchema);

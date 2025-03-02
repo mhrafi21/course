@@ -134,15 +134,13 @@ const Navbar: React.FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
            {/* Login User DropdownMenu */}
+           <NavLink to={"/login"}><Button>Login</Button></NavLink>
+           <NavLink to={"/sign-up"}><Button>Sign Up</Button></NavLink>
             <div className=''>
             <UserDropdownMenu />
             </div>
         {/* Login User DropdownMenu */}
         </div>
-
-       
-
-      
 
         {/* Mobile Menu Button */}
         <Sheet>

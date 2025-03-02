@@ -12,6 +12,8 @@ import Reports from "../pages/DahboardPages/Reports/Reports";
 import Cart from "@/pages/frontendPages/Cart/Cart";
 import Course from "@/pages/frontendPages/Course/Course";
 import SingleCourse from "@/pages/frontendPages/Course/SingleCourse/SingleCourse";
+import Registration from "@/components/Registration/Registration";
+import Login from "@/components/Login/Login";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
       {
         path: "/courses/:slug/",
         Component: () => <SingleCourse />
+      },
+      {
+        path: "/sign-up/",
+        Component: () => <Registration />
+      },
+      {
+        path: "/login/",
+        Component: () => <Login />
       },
       {
         path: "/cart/",

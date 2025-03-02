@@ -8,6 +8,7 @@ export interface IUser extends Document {
     resetPasswordToken?: string;
     role?: 'student' | 'instructor' | 'admin';
     resetPasswordExpires?: Date;
+    agreeToTerms: boolean
 }
 
 export type TTokens = {
