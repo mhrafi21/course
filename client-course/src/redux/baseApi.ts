@@ -1,9 +1,4 @@
-import { IUser } from "@/interface";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-// Update the UpdateCartMutationResult type definition
-
-/// https://backend-campers-shop.vercel.app/api/v1
 
 export const baseApi = createApi({
   reducerPath: "baseApi",
@@ -14,7 +9,7 @@ export const baseApi = createApi({
     // signup
     signup: builder.mutation({
       query: (credentials) => ({
-        url: "/auth/signup",
+        url: "/auth/register",
         method: "POST",
         body: credentials,
       }),
@@ -71,6 +66,7 @@ export const baseApi = createApi({
 });
 
 export const {
+  useSignupMutation,
   useCreateProductMutation,
   useGetCoursesQuery,
   useGetCourseBySlugQuery,
