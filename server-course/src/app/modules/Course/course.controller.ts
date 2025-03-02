@@ -17,7 +17,7 @@ import { ICourse } from "./course.interface";
 
 const getCourses = catchAsync(async(req,res) => {
     const { page, limit } = req.query;
-    const result = await courseServices.getCoursesFromDB({page, limit});
+    const result = await courseServices.getCoursesFromDB({page,limit} as {page: string,limit: string});
     
     sendResponse(res, {
         statusCode: httpStatus.OK,

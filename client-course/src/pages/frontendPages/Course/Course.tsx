@@ -8,14 +8,24 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"; // Import Shadcn pagination components
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"; // Import Shadcn card components
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"; // Import Shadcn card components
 import { ICourse } from "@/interface";
 
 const Course: React.FC = () => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 6; // Adjust as needed for card layout
 
-  const { data: courses, isLoading, isError } = useGetCoursesQuery({
+  const {
+    data: courses,
+    isLoading,
+    isError,
+  } = useGetCoursesQuery({
     page: page,
     limit: itemsPerPage,
   });
@@ -33,7 +43,7 @@ const Course: React.FC = () => {
   }
 
   const courseData = courses.data.data;
-  
+
   const totalItems = courses.data.totalData;
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -52,7 +62,7 @@ const Course: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {courseData.map((course : ICourse) => (
+        {courseData.map((course: ICourse) => (
           <Card key={course._id}>
             <CardHeader>
               <CardTitle>{course.title}</CardTitle>
@@ -67,20 +77,28 @@ const Course: React.FC = () => {
       </div>
 
       <Pagination className="mt-4 justify-center">
-        <PaginationPrevious onClick={() => handlePageChange(page - 1)} aria-disabled={page === 1} />
+        <PaginationPrevious
+          onClick={() => handlePageChange(page - 1)}
+          aria-disabled={page === 1}
+        />
         <PaginationContent>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
-            <PaginationItem key={pageNumber}>
-              <PaginationLink
-                isActive={pageNumber === page}
-                onClick={() => handlePageChange(pageNumber)}
-              >
-                {pageNumber}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+            (pageNumber) => (
+              <PaginationItem key={pageNumber}>
+                <PaginationLink
+                  isActive={pageNumber === page}
+                  onClick={() => handlePageChange(pageNumber)}
+                >
+                  {pageNumber}
+                </PaginationLink>
+              </PaginationItem>
+            )
+          )}
         </PaginationContent>
-        <PaginationNext onClick={() => handlePageChange(page + 1)} aria-disabled={page === totalPages} />
+        <PaginationNext
+          onClick={() => handlePageChange(page + 1)}
+          aria-disabled={page === totalPages}
+        />
       </Pagination>
     </div>
   );

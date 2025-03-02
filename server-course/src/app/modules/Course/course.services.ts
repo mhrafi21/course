@@ -7,12 +7,12 @@ const createCourseIntoDB = async (payload: ICourse) => {
     return result;
 }
 
-const getCoursesFromDB = async (payload: { page: number, limit: number }) => {
+const getCoursesFromDB = async (payload: { page: string, limit: string }) => {
     // logic here
     const { page, limit } = payload;
     const pageNum = Number(page) || 1;
     const limitPage = Number(limit) || 10;
-    const skip = (pageNum - 1) * limit;
+    const skip = (pageNum - 1) * limitPage;
     const totalData = await Course.find({}).countDocuments();
     const data = await Course.find().skip(skip).limit(limitPage).populate('instructor', 'username');
     return {totalData, data};
