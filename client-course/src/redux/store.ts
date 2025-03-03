@@ -1,21 +1,23 @@
-import { configureStore } from "@reduxjs/toolkit"
+import { Action, configureStore, Reducer } from "@reduxjs/toolkit"
 import { baseApi } from "./baseApi";
-// import productsReducer from "../redux/features/products/productsSlice"
-// import cartReducer from "../redux/features/products/cartSlice"
-// import paginationReducer from "../redux/features/products/paginationSlice"
+import { persistStore } from "redux-persist"
+import authReducer from "./features/Auth/authSlice"
+import { makePersistReducer } from "./persistConfig";
+
 export const store = configureStore({
     reducer: {
         [baseApi.reducerPath]: baseApi.reducer,
-        // products: productsReducer,
-        // cart: cartReducer,
-        // pagination: paginationReducer
+        reducer: makePersistReducer(authReducer as Reducer<unknown, Action> )
+
     }, // Your root reducer goes here. Replace with your actual reducer.
 
     middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware().concat(baseApi.middleware), // Add the api middleware
+        getDefaultMiddleware( {serializableCheck: false }).concat(baseApi.middleware), // Add the api middleware
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
+
+export const persistor = persistStore(store);

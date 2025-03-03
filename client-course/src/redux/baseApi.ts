@@ -15,6 +15,15 @@ export const baseApi = createApi({
       }),
     }),
 
+    //login
+    login: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/login",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+
     createProduct: builder.mutation({
       query: (product) => {
         return {
@@ -67,6 +76,7 @@ export const baseApi = createApi({
 
 export const {
   useSignupMutation,
+  useLoginMutation,
   useCreateProductMutation,
   useGetCoursesQuery,
   useGetCourseBySlugQuery,

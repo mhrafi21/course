@@ -56,7 +56,7 @@ const loginUserIntoDB = async (payload: IUser) => {
   // generate tokens
   const accessToken = generateAccessToken(userObj as TTokens);
   const refreshToken = generateRefreshToken(userObj as TTokens);
-  return { accessToken, refreshToken, needsPasswordChange: user.needsPasswordChange };
+  return { accessToken, refreshToken, needsPasswordChange: user.needsPasswordChange, username: user.username, email: user.email };
 
 
 

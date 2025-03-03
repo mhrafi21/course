@@ -30,3 +30,12 @@ export interface IUser  {
     resetPasswordExpires?: Date;
     agreeToTerms: boolean
 }
+
+
+export interface TToken {
+    accessToken : null | string;
+    needsPasswordChange?: boolean;
+}
+export interface AuthState {
+    token: null | string;
+}
