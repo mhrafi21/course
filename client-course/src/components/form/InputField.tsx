@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import { IUser } from "@/interface";
+import { CardDescription } from "../ui/card";
 
 interface InputFieldProps {
   id?: keyof IUser;
@@ -22,7 +23,6 @@ export const InputField: React.FC<InputFieldProps> = ({ id, label, type = "text"
         </Label>
         <div className="relative">
           <Input
-           
             id={id}
             type={type === "password" && showPassword ? "text" : type}
             placeholder={`Enter your ${label.toLowerCase()}`}
@@ -47,7 +47,7 @@ export const InputField: React.FC<InputFieldProps> = ({ id, label, type = "text"
             </button>
           )}
         </div>
-        {id && errors[id] && <p className="text-red-500 text-sm mt-1">{errors[id].message}</p>}
+        {id && errors[id] && <CardDescription className="text-red-500 text-sm mt-1">{errors[id].message}</CardDescription>}
       </div>
     );
   };

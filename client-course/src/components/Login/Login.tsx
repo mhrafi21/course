@@ -93,7 +93,7 @@ const Login = () => {
               <div className="mt-6">
                 <div className="flex items-center gap-2">
                   <div className="flex-1 border-t border-gray-300"></div>
-                  <span className="text-gray-500 text-sm">OR</span>
+                  <CardDescription className=" text-sm">OR</CardDescription>
                   <div className="flex-1 border-t border-gray-300"></div>
                 </div>
                 <div className="mt-4 flex flex-col space-y-3">
@@ -109,7 +109,7 @@ const Login = () => {
             
             </CardContent>
               {/* Sign Up Link */}
-              <CardDescription className="flex gap-2 items-center justify-center">
+              <CardDescription className="flex mt-4 md:mt-0 gap-2 items-center justify-center">
                 Don't have an account?{" "}
                 <span
                   className="text-indigo-600 font-semibold cursor-pointer hover:underline"

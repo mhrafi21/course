@@ -6,13 +6,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
+import { CardTitle } from "@/components/ui/card";
 
 const Faq: React.FC = () => {
   return (
-    <div>
-      {/* FAQ Section */}
-      <section className="py-16 text-center">
-        <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions</h2>
+    <section className="py-16 text-center">
+      <div className="container">
+        <CardTitle className="text-3xl font-bold">Frequently Asked Questions</CardTitle>
         <Accordion type="single" collapsible className="max-w-3xl mx-auto">
           {[
             {
@@ -37,8 +37,8 @@ const Faq: React.FC = () => {
             </AccordionItem>
           ))}
         </Accordion>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 

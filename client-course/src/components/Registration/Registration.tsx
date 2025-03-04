@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSignupMutation } from "@/redux/baseApi";
 import { toast } from "sonner";
 import { IUser } from "@/interface";
@@ -9,6 +9,7 @@ import { InputField } from "../form/InputField";
 import { motion } from "framer-motion";
 import singUpImg from "../../assets/images/login.svg";
 import { useNavigate } from "react-router";
+import { Input } from "../ui/input";
 export default function Registration() {
   const navigate = useNavigate();
   const [signUpUser] = useSignupMutation();
@@ -69,12 +70,12 @@ export default function Registration() {
             >
               <Card className="bg-white shadow-none border-none overflow-hidden">
                 <CardHeader className="text-center py-6">
-                  <CardTitle className="text-3xl font-bold text-gray-800">
+                  <CardTitle className="text-3xl font-bold ">
                     Create an Account
                   </CardTitle>
-                  <p className="text-sm text-gray-500">
+                  <CardDescription className="text-sm ">
                     Join as an Instructor or Student
-                  </p>
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="p-0 md:p-6">
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -109,12 +110,12 @@ export default function Registration() {
 
                     {/* Role Selection */}
                     <div>
-                      <Label className="text-gray-700 font-medium">
+                      <Label className="font-medium">
                         Select Role
                       </Label>
                       <div className="flex gap-4 mt-2">
                         <label className="flex items-center space-x-2">
-                          <input
+                          <Input
                             type="radio"
                             value="student"
                             {...register("role", {
@@ -122,10 +123,10 @@ export default function Registration() {
                             })}
                             className="accent-indigo-600"
                           />
-                          <span className="text-gray-700">Student</span>
+                          <CardDescription className="text-gray-700">Student</CardDescription>
                         </label>
                         <label className="flex items-center space-x-2">
-                          <input
+                          <Input
                             type="radio"
                             value="instructor"
                             {...register("role", {
@@ -133,37 +134,41 @@ export default function Registration() {
                             })}
                             className="accent-indigo-600"
                           />
-                          <span className="text-gray-700">Instructor</span>
+                          <CardDescription className="text-gray-700">Instructor</CardDescription>
                         </label>
                       </div>
                       {errors.role && (
-                        <p className="text-red-500 text-sm">
+                        <CardDescription className="text-red-500 text-sm">
                           {errors.role.message}
-                        </p>
+                        </CardDescription>
                       )}
                     </div>
 
                     {/* Terms & Conditions */}
-                    <div className="flex items-center space-x-2">
-                      <input
+                    <div className="flex items-center">
+                     <div>
+                     <Input
                         type="checkbox"
                         id="agree"
                         {...register("agreeToTerms", {
                           required: "You must agree to the terms",
                         })}
-                        className="accent-indigo-600"
+                        className="accent-indigo-600 h-3"
                       />
+                     </div>
                       <Label htmlFor="agree" className="text-sm text-gray-700">
-                        I agree to the{" "}
+                       <CardDescription>
+                       I agree to the{" "}
                         <span className="text-indigo-600 font-semibold cursor-pointer hover:underline">
                           Terms and Conditions
                         </span>
+                       </CardDescription>
                       </Label>
                     </div>
                     {errors.agreeToTerms && (
-                      <p className="text-red-500 text-sm">
+                      <CardDescription className="text-red-500 text-sm">
                         {errors.agreeToTerms.message}
-                      </p>
+                      </CardDescription>
                     )}
 
                     {/* Submit Button */}
@@ -172,7 +177,7 @@ export default function Registration() {
                     </Button>
                   </form>
                    {/* Sign Up Link */}
-              <p className="text-center text-gray-500 mt-4">
+              <CardDescription className="text-center  mt-4">
                 Already have an account?{" "}
                 <span
                   className="text-indigo-600 font-semibold cursor-pointer hover:underline"
@@ -180,7 +185,7 @@ export default function Registration() {
                 >
                   Login here
                 </span>
-              </p>
+              </CardDescription>
                 </CardContent>
               </Card>
             </motion.div>
