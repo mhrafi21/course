@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { InputField } from "../form/InputField";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
@@ -59,10 +59,10 @@ const Login = () => {
         >
           <Card className=" overflow-hidden border-none shadow-none">
             <CardHeader className="text-center py-6">
-              <CardTitle className="text-3xl font-bold text-gray-800">
+              <CardTitle className="text-3xl font-bold">
                 Welcome Back
               </CardTitle>
-              <p className="text-sm text-gray-500">Login to continue</p>
+              <CardDescription>Login to continue</CardDescription>
             </CardHeader>
             <CardContent className="md:p-6 p-0">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -81,7 +81,7 @@ const Login = () => {
                   errors={errors}
                 />
                 <Button
-                  size="lg"
+                  size={"lg"}
                   type="submit"
                   className="w-full"
                 >
@@ -97,17 +97,19 @@ const Login = () => {
                   <div className="flex-1 border-t border-gray-300"></div>
                 </div>
                 <div className="mt-4 flex flex-col space-y-3">
-                  <Button className="w-full bg-white text-black border hover:bg-white flex items-center justify-center gap-2 transition">
+                  <Button size={"lg"} className="w-full bg-white text-black border hover:bg-white flex items-center justify-center gap-2 transition">
                     <span></span> Continue with Google
                   </Button>
-                  <Button className="w-full bg-white text-black border hover:bg-white flex items-center justify-center gap-2 transition">
+                  <Button size={"lg"} className="w-full bg-white text-black border hover:bg-white flex items-center justify-center gap-2 transition">
                     <span></span> Continue with Facebook
                   </Button>
                 </div>
               </div>
 
+            
+            </CardContent>
               {/* Sign Up Link */}
-              <p className="text-center text-gray-500 mt-4">
+              <CardDescription className="flex gap-2 items-center justify-center">
                 Don't have an account?{" "}
                 <span
                   className="text-indigo-600 font-semibold cursor-pointer hover:underline"
@@ -115,8 +117,7 @@ const Login = () => {
                 >
                   Sign up here
                 </span>
-              </p>
-            </CardContent>
+              </CardDescription>
           </Card>
         </motion.div>
       </div>

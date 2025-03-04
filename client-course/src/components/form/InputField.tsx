@@ -22,11 +22,11 @@ export const InputField: React.FC<InputFieldProps> = ({ id, label, type = "text"
         </Label>
         <div className="relative">
           <Input
-            
+           
             id={id}
             type={type === "password" && showPassword ? "text" : type}
             placeholder={`Enter your ${label.toLowerCase()}`}
-            className="mt-1 pr-10 shadow-sm h-12"
+            className="mt-1 h-10 pr-10 shadow-sm"
             {...register(id, {
               required: `${label} is required`,
               ...(id === "password" && {
