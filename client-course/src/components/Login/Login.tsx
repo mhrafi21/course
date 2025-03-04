@@ -1,12 +1,20 @@
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { InputField } from "../form/InputField";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import { useLoginMutation } from "@/redux/baseApi";
 import { toast } from "sonner";
-import LoginImg from "../../assets/images/login.svg"
+import LoginImg from "../../assets/images/login.svg";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,13 +46,15 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
+    <div>
+      <div className="container">
+      <div className="flex flex-col md:flex-row min-h-screen">
       {/* Image Section */}
       <motion.div
-      initial={{ opacity: 0, y: -100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
-      className="hidden md:flex md:w-1/2 bg-cover bg-center" 
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="hidden md:flex md:w-1/2 bg-cover bg-center"
       >
         <img src={LoginImg} alt="image not found" />
       </motion.div>
@@ -57,11 +67,9 @@ const Login = () => {
           transition={{ duration: 1 }}
           className="w-full max-w-lg"
         >
-          <Card className=" overflow-hidden border-none shadow-none">
+          <Card className="overflow-hidden border-none shadow-none">
             <CardHeader className="text-center py-6">
-              <CardTitle className="text-3xl font-bold">
-                Welcome Back
-              </CardTitle>
+              <CardTitle className="text-3xl font-bold">Welcome Back</CardTitle>
               <CardDescription>Login to continue</CardDescription>
             </CardHeader>
             <CardContent className="md:p-6 p-0">
@@ -80,11 +88,34 @@ const Login = () => {
                   register={register}
                   errors={errors}
                 />
-                <Button
-                  size={"lg"}
-                  type="submit"
-                  className="w-full"
-                >
+
+                {/* Forgot Password Link */}
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-2 items-center">
+                    <div>
+                      <Input
+                        type="checkbox"
+                        id="agree"
+                        className=" h-3"
+                      />
+                    </div>
+                    <Label htmlFor="agree" className="text-sm text-gray-700">
+                      <CardDescription>
+                        Remember Me
+                      </CardDescription>
+                    </Label>
+                  </div>
+                  <div className="text-right">
+                    <span
+                      className=" text-sm font-semibold cursor-pointer hover:underline"
+                      onClick={() => navigate("/forgot-password")}
+                    >
+                      Forgot Password?
+                    </span>
+                  </div>
+                </div>
+
+                <Button size="lg" type="submit" className="w-full">
                   Login
                 </Button>
               </form>
@@ -93,33 +124,42 @@ const Login = () => {
               <div className="mt-6">
                 <div className="flex items-center gap-2">
                   <div className="flex-1 border-t border-gray-300"></div>
-                  <CardDescription className=" text-sm">OR</CardDescription>
+                  <CardDescription className="text-sm">OR</CardDescription>
                   <div className="flex-1 border-t border-gray-300"></div>
                 </div>
                 <div className="mt-4 flex flex-col space-y-3">
-                  <Button size={"lg"} className="w-full bg-white text-black border hover:bg-white flex items-center justify-center gap-2 transition">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full flex items-center justify-center gap-2 transition"
+                  >
                     <span></span> Continue with Google
                   </Button>
-                  <Button size={"lg"} className="w-full bg-white text-black border hover:bg-white flex items-center justify-center gap-2 transition">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full flex items-center justify-center gap-2 transition"
+                  >
                     <span></span> Continue with Facebook
                   </Button>
                 </div>
               </div>
-
-            
             </CardContent>
-              {/* Sign Up Link */}
-              <CardDescription className="flex mt-4 md:mt-0 gap-2 items-center justify-center">
-                Don't have an account?{" "}
-                <span
-                  className="text-indigo-600 font-semibold cursor-pointer hover:underline"
-                  onClick={() => navigate("/sign-up")}
-                >
-                  Sign up here
-                </span>
-              </CardDescription>
+
+            {/* Sign Up Link */}
+            <CardDescription className="flex mt-4 md:mt-0 gap-2 items-center justify-center">
+              Don't have an account?{" "}
+              <span
+                className="text-indigo-600 font-semibold cursor-pointer hover:underline"
+                onClick={() => navigate("/sign-up")}
+              >
+                Sign up here
+              </span>
+            </CardDescription>
           </Card>
         </motion.div>
+      </div>
+    </div>
       </div>
     </div>
   );

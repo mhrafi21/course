@@ -20,7 +20,7 @@ const Navbar: React.FunctionComponent = () => {
   const { isAuthenticated, user } = useAuth();
 
   return (
-    <Card className="shadow-md border-none fixed top-0 left-0 w-full z-50 bg-white dark:bg-gray-900 transition-colors">
+    <Card className="rounded-none shadow-md border-b-2 border-none fixed top-0 left-0 w-full z-50 bg-white dark:bg-gray-900 transition-colors">
       <nav className="">
         <div className="container mx-auto flex justify-between items-center h-20">
           {/* Logo */}

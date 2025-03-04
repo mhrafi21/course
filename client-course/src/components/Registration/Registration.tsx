@@ -51,6 +51,8 @@ export default function Registration() {
   };
 
   return (
+    <div>
+
     <div className="container">
       <div >
         <div className="flex flex-col justify-center items-center md:flex-row min-h-screen">
@@ -145,7 +147,7 @@ export default function Registration() {
                     </div>
 
                     {/* Terms & Conditions */}
-                    <div className="flex items-center">
+                    <div className="flex gap-2 items-center">
                      <div>
                      <Input
                         type="checkbox"
@@ -192,6 +194,7 @@ export default function Registration() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

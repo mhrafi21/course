@@ -74,7 +74,7 @@ const forgotPasswordFromDB = async (payload: string) => {
   user.resetPasswordToken = resetToken;
   user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
   await user.save();
-  const resetUrl = `http://localhost:3000/api/auth/reset-password?token=${resetToken}`;
+  const resetUrl = `http://localhost:5173/reset-password?token=${resetToken}`;
 
   // send email
   const result = await sendEmail(user.email, "Password Reset", `Click here to reset your password: ${resetUrl}`);

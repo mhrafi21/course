@@ -15,6 +15,8 @@ import SingleCourse from "@/pages/frontendPages/Course/SingleCourse/SingleCourse
 import Registration from "@/components/Registration/Registration";
 import Login from "@/components/Login/Login";
 import PrivateRoute from "@/components/PrivateRoute/PrivateRoute";
+import ForgotPassword from "@/pages/frontendPages/ForgotPassword/ForgotPassword";
+import ResetPassword from "@/pages/frontendPages/ResetPassword/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +40,14 @@ const router = createBrowserRouter([
       {
         path: "/sign-up/",
         Component: () => <Registration />,
+      },
+      {
+        path: "/forgot-password/",
+        Component: () => <ForgotPassword />,
+      },
+      {
+        path: "/reset-password",
+        Component: () => <ResetPassword />,
       },
       {
         path: "/login/",

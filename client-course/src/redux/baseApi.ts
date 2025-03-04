@@ -23,6 +23,16 @@ export const baseApi = createApi({
         body: credentials,
       }),
     }),
+    
+        // forgot password 
+    forgotPassword: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/change-password",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+
 
     createProduct: builder.mutation({
       query: (product) => {
@@ -77,6 +87,7 @@ export const baseApi = createApi({
 export const {
   useSignupMutation,
   useLoginMutation,
+  useForgotPasswordMutation,
   useCreateProductMutation,
   useGetCoursesQuery,
   useGetCourseBySlugQuery,
