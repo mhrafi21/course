@@ -6,7 +6,7 @@ const Features = () => {
     <div>
       {/* Features Section */}
       {/* Features Section */}
-      <section className="py-16 px-6 bg-gray-100 text-center">
+      <section className="py-16 px-6  text-center">
         <div className="container">
           <h2 className="text-3xl font-bold mb-6">Why Choose Our Platform?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto">

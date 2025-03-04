@@ -12,6 +12,7 @@ import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { motion } from "framer-motion"; // Import Framer Motion
 import UserDropdownMenu from "@/components/UserDropDownMenu/UserDropDownMenu";
 import { useAuth } from "@/hooks/useAuth";
+import { ModeToggle } from "../ThemeProvider/ModeToggle";
 
 
 const Navbar: React.FunctionComponent = () => {
@@ -136,7 +137,7 @@ const Navbar: React.FunctionComponent = () => {
               </NavLink>
             </DropdownMenuContent>
           </DropdownMenu>
-
+            <ModeToggle />
           <div className="">
             {isAuthenticated ? (
               <UserDropdownMenu user={user} />
