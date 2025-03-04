@@ -11,10 +11,14 @@ import {
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { motion } from "framer-motion"; // Import Framer Motion
 import UserDropdownMenu from "@/components/UserDropDownMenu/UserDropDownMenu";
+import { useAuth } from "@/hooks/useAuth";
 
-const Navbar: React.FC = () => {
+
+const Navbar: React.FunctionComponent = () => {
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
+  const { isAuthenticated, user } = useAuth();
 
+  console.log(user);
   return (
     <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
       <div className="container mx-auto flex justify-between items-center h-20">
@@ -123,23 +127,26 @@ const Navbar: React.FC = () => {
                       <p className="text-xs font-medium text-gray-500">
                         By Author
                       </p>
-
                     </div>
                   </div>
                 </div>
               </DropdownMenuItem>
-            <NavLink to="/cart"  className="w-full">
-              <Button  className="w-full">View cart</Button>
-            </NavLink>
+              <NavLink to="/cart" className="w-full">
+                <Button className="w-full">View cart</Button>
+              </NavLink>
             </DropdownMenuContent>
           </DropdownMenu>
-           {/* Login User DropdownMenu */}
-           <NavLink to={"/login"}><Button>Login</Button></NavLink>
-           <NavLink to={"/sign-up"}><Button>Sign Up</Button></NavLink>
-            <div className=''>
-            <UserDropdownMenu />
-            </div>
-        {/* Login User DropdownMenu */}
+
+          <div className="">
+            {isAuthenticated ? (
+              <UserDropdownMenu user={user} />
+            ) : (
+              <NavLink to={"/login"}>
+                <Button>Login</Button>
+              </NavLink>
+            )}
+          </div>
+          {/* Login User DropdownMenu */}
         </div>
 
         {/* Mobile Menu Button */}

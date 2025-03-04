@@ -31,8 +31,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import UserAvatar from "../Avatar/UserAvatar";
+import { TSToken } from "@/interface";
+import { useAppDispatch } from "@/redux/hooks";
+import { logout } from "@/redux/features/Auth/authSlice";
 
-const UserDropdownMenu = () => {
+
+const UserDropdownMenu = (user: TSToken) => {
+  const dispatch = useAppDispatch();
+  
   return (
     <div className="">
       <DropdownMenu>
@@ -43,6 +49,8 @@ const UserDropdownMenu = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="absolute -right-5 w-56">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
+
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>
@@ -115,7 +123,8 @@ const UserDropdownMenu = () => {
             <span>API</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+       
+          <DropdownMenuItem onClick={() => dispatch(logout())}>
             <LogOut />
             <span>Log out</span>
             <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

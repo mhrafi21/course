@@ -6,8 +6,11 @@ import { useSignupMutation } from "@/redux/baseApi";
 import { toast } from "sonner";
 import { IUser } from "@/interface";
 import { InputField } from "../form/InputField";
-
+import { motion } from "framer-motion";
+import singUpImg from "../../assets/images/login.svg";
+import { useNavigate } from "react-router";
 export default function Registration() {
+  const navigate = useNavigate();
   const [signUpUser] = useSignupMutation();
   const {
     register,
@@ -29,9 +32,9 @@ export default function Registration() {
     try {
       const result = await signUpUser(data).unwrap();
       if (result.success) {
-        toast("Registration successful!");
+        toast.success("Registration successful!");
       } else {
-        toast(result.message);
+        toast.error(result.message);
       }
     } catch (error: unknown) {
       if (
@@ -41,75 +44,149 @@ export default function Registration() {
       ) {
         toast.error("User is already registered!");
       } else {
-        toast("Username is already used, try a different one!");
+        toast.error("Username is already used, try a different one!");
       }
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen p-6">
-      <Card className="w-full max-w-lg bg-white rounded-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-gray-800">
-            Create an Account
-          </CardTitle>
-          <p className="text-sm text-gray-500">
-            Join as an Instructor or Student
-          </p>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <InputField
-              id="username"
-              label="Full Name"
-              register={register}
-              errors={errors}
-            />
-            <InputField
-              id="email"
-              label="Email Address"
-              type="email"
-              register={register}
-              errors={errors}
-            />
-            <InputField
-              id="password"
-              label="Password"
-              type="password"
-              register={register}
-              errors={errors}
-            />
-            <InputField
-              id="confirmPassword"
-              label="Confirm Password"
-              type="password"
-              register={register}
-              errors={errors}
-              watch={watch}
-            />
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="agree"
-                {...register("agreeToTerms", {
-                  required: "You must agree to the terms",
-                })}
-              />
-              <Label htmlFor="agree" className="text-sm text-gray-700">
-                I agree to the Terms and Conditions
-              </Label>
-            </div>
-            {errors.agreeToTerms && (
-              <p className="text-red-500 text-sm">
-                {errors.agreeToTerms.message}
+    <div className="container">
+      <div >
+        <div className="flex flex-col justify-center items-center md:flex-row min-h-screen">
+          <motion.div
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="hidden md:flex md:w-1/2 bg-cover bg-center">
+            <img src={singUpImg} alt="img not found" />
+          </motion.div>
+          <div className="flex flex-col justify-center items-center w-full md:w-1/2">
+            <motion.div
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+              className="w-full max-w-lg"
+            >
+              <Card className="bg-white shadow-none border-none overflow-hidden">
+                <CardHeader className="text-center py-6">
+                  <CardTitle className="text-3xl font-bold text-gray-800">
+                    Create an Account
+                  </CardTitle>
+                  <p className="text-sm text-gray-500">
+                    Join as an Instructor or Student
+                  </p>
+                </CardHeader>
+                <CardContent className="p-0 md:p-6">
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    <InputField
+                      id="username"
+                      label="Full Name"
+                      register={register}
+                      errors={errors}
+                    />
+                    <InputField
+                      id="email"
+                      label="Email Address"
+                      type="email"
+                      register={register}
+                      errors={errors}
+                    />
+                    <InputField
+                      id="password"
+                      label="Password"
+                      type="password"
+                      register={register}
+                      errors={errors}
+                    />
+                    <InputField
+                      id="confirmPassword"
+                      label="Confirm Password"
+                      type="password"
+                      register={register}
+                      errors={errors}
+                      watch={watch}
+                    />
+
+                    {/* Role Selection */}
+                    <div>
+                      <Label className="text-gray-700 font-medium">
+                        Select Role
+                      </Label>
+                      <div className="flex gap-4 mt-2">
+                        <label className="flex items-center space-x-2">
+                          <input
+                            type="radio"
+                            value="student"
+                            {...register("role", {
+                              required: "Role is required",
+                            })}
+                            className="accent-indigo-600"
+                          />
+                          <span className="text-gray-700">Student</span>
+                        </label>
+                        <label className="flex items-center space-x-2">
+                          <input
+                            type="radio"
+                            value="instructor"
+                            {...register("role", {
+                              required: "Role is required",
+                            })}
+                            className="accent-indigo-600"
+                          />
+                          <span className="text-gray-700">Instructor</span>
+                        </label>
+                      </div>
+                      {errors.role && (
+                        <p className="text-red-500 text-sm">
+                          {errors.role.message}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Terms & Conditions */}
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="agree"
+                        {...register("agreeToTerms", {
+                          required: "You must agree to the terms",
+                        })}
+                        className="accent-indigo-600"
+                      />
+                      <Label htmlFor="agree" className="text-sm text-gray-700">
+                        I agree to the{" "}
+                        <span className="text-indigo-600 font-semibold cursor-pointer hover:underline">
+                          Terms and Conditions
+                        </span>
+                      </Label>
+                    </div>
+                    {errors.agreeToTerms && (
+                      <p className="text-red-500 text-sm">
+                        {errors.agreeToTerms.message}
+                      </p>
+                    )}
+
+                    {/* Submit Button */}
+                    <Button size="lg" type="submit" className="w-full">
+                      Sign Up
+                    </Button>
+                  </form>
+                   {/* Sign Up Link */}
+              <p className="text-center text-gray-500 mt-4">
+                Already have an account?{" "}
+                <span
+                  className="text-indigo-600 font-semibold cursor-pointer hover:underline"
+                  onClick={() => navigate("/login")}
+                >
+                  Login here
+                </span>
               </p>
-            )}
-            <Button size="lg" type="submit" className="w-full">
-              Sign Up
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

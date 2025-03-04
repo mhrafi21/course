@@ -15,7 +15,7 @@ const RootLayout: React.FC = () => {
       <main  className="pt-20">
         {/* Render the children components */}
         <Outlet />
-        <Toaster />
+        <Toaster position="bottom-right" />
       </main>
       <footer>
         <Footer />

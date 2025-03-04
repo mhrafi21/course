@@ -14,6 +14,7 @@ import Course from "@/pages/frontendPages/Course/Course";
 import SingleCourse from "@/pages/frontendPages/Course/SingleCourse/SingleCourse";
 import Registration from "@/components/Registration/Registration";
 import Login from "@/components/Login/Login";
+import PrivateRoute from "@/components/PrivateRoute/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -28,24 +29,28 @@ const router = createBrowserRouter([
       },
       {
         path: "/courses/",
-        Component: () => <Course />
+        Component: () => <Course />,
       },
       {
         path: "/courses/:slug/",
-        Component: () => <SingleCourse />
+        Component: () => <SingleCourse />,
       },
       {
         path: "/sign-up/",
-        Component: () => <Registration />
+        Component: () => <Registration />,
       },
       {
         path: "/login/",
-        Component: () => <Login />
+        Component: () => <Login />,
       },
       {
         path: "/cart/",
-        Component: () => <Cart />
-      }
+        Component: () => (
+          <PrivateRoute>
+            <Cart />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
   {

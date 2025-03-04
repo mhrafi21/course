@@ -31,6 +31,11 @@ export interface IUser  {
     agreeToTerms: boolean
 }
 
+export interface TSToken  {
+    username: string | null;
+    email: string;
+    role: string;
+}
 
 export interface TToken {
     accessToken : null | string;
