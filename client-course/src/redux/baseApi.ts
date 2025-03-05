@@ -33,6 +33,16 @@ export const baseApi = createApi({
       }),
     }),
 
+    // reset password
+
+    resetPassword: builder.mutation({
+      query: (credentials) => ({
+        url: '/auth/reset-password',
+        method: "POST",
+        body: credentials
+      })
+    }),
+
 
     createProduct: builder.mutation({
       query: (product) => {
@@ -88,6 +98,7 @@ export const {
   useSignupMutation,
   useLoginMutation,
   useForgotPasswordMutation,
+  useResetPasswordMutation,
   useCreateProductMutation,
   useGetCoursesQuery,
   useGetCourseBySlugQuery,

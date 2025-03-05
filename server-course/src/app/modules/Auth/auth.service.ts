@@ -20,7 +20,6 @@ const registrationUserIntoDB = async (payload: IUser) => {
   const user = await User.findOne({ email });
   if (user) {
     throw new AppError(httpStatus.BAD_REQUEST, 'User already exists');
-
   }
 
   // hash password
@@ -43,12 +42,12 @@ const loginUserIntoDB = async (payload: IUser) => {
 
   const user = await User.findOne({ email });
   if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'User not found',);
+    throw new AppError(httpStatus.NOT_FOUND, 'Email is incorrect!',);
   }
 
   const isPasswordCorrect = await bcrypt.compare(password, user.confirmPassword);
   if (!isPasswordCorrect) {
-    throw new AppError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Password is incorrect!');
   }
 
   const userObj = { id: user._id ,username: user.username, email: user.email, role: user.role }
@@ -66,7 +65,7 @@ const forgotPasswordFromDB = async (payload: string) => {
 
   const user = await User.findOne({ email: payload });
   if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
   }
   // generate reset token
   const userObj = { username: user.username, email: user.email, role: user.role }
@@ -83,7 +82,8 @@ const forgotPasswordFromDB = async (payload: string) => {
 
 export const resetPasswordFromDB = async (payload: { resetToken: string, password: string, confirmPassword: string }) => {
   const { resetToken, password, confirmPassword } = payload;
-  const decoded = verifyToken(resetToken as string, config.jwt_access_secret as string);
+
+  const decoded = verifyToken(resetToken as string, config.jwt_access_secret as string) as TTokens;
   const user = await User.findOne({
     email: decoded.email,
     resetPasswordToken: resetToken,
@@ -91,11 +91,11 @@ export const resetPasswordFromDB = async (payload: { resetToken: string, passwor
   });
 
   if (!user) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Invalid token for changing password');
+    throw new AppError(httpStatus.BAD_REQUEST, 'Invalid token for changing password!');
   }
 
   if (password !== confirmPassword) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Passwords do not match');
+    throw new AppError(httpStatus.BAD_REQUEST, 'Passwords do not match!');
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
@@ -115,11 +115,11 @@ const refreshTokenFromDB = async (payload: string) => {
 
   // logic here
   // check if token is valid
-  const decoded = verifyToken(refreshToken, config.jwt_refresh_secret as string);
+  const decoded = verifyToken(refreshToken, config.jwt_refresh_secret as string) as TTokens;
 
   const user = await User.findOne({ email: decoded.email });
   if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
   }
 
   const userObj = { username: user.username, email: user.email, role: user.role }

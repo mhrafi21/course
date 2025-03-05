@@ -15,7 +15,7 @@ import { InputField } from "@/components/form/InputField";
 import { useForgotPasswordMutation } from "@/redux/baseApi";
 
 const ForgotPassword = () => {
-  const [sendFogotPasswordLink] = useForgotPasswordMutation(undefined);
+  const [sendFogotPasswordLink, {isLoading}] = useForgotPasswordMutation(undefined);
   const navigate = useNavigate();
   const {
     register,
@@ -28,17 +28,20 @@ const ForgotPassword = () => {
   });
 
   const onSubmit = async (data: { email: string }) => {
-    console.log("Forgot Password Request:", data);
     
-    // Simulating user check (Replace with actual API call)
+    try {
+          
     const result = await sendFogotPasswordLink(data).unwrap() as {statusCode: boolean, success: boolean, message: string, data: any};
     
     if (result.success) {
       toast.success("Password reset link sent to your email.");
-      // Call API to send reset email here
     } else {
       toast.error("User not found. Please check your email address.");
     }
+    } catch (error: any) {
+      toast.error(`${error.data.message}`)
+    }
+
   };
 
 
@@ -76,9 +79,15 @@ const ForgotPassword = () => {
                   register={register}
                   errors={errors}
                 />
+                {
+                  isLoading ? <Button className="w-full " size={"lg"}>
+                    Sending...
+                  </Button>:
+
                 <Button size="lg" type="submit" className="w-full">
                   Send Reset Link
                 </Button>
+                }
               </form>
               <CardDescription className="flex mt-4 gap-2 items-center justify-center">
                 Remember your password? 

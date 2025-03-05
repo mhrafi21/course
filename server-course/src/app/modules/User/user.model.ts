@@ -26,13 +26,19 @@ const userSchema = new Schema<IUser>({
         default: false,
     },
    
-    resetPasswordToken: String,
+    resetPasswordToken: {
+        type: String,
+        default : undefined
+    },
     role: {
         type: String,
         enum: ['student', 'instructor', 'admin'],
         default: 'student',
     },
-    resetPasswordExpires: Date,
+    resetPasswordExpires: {
+        type: Date,
+        default: undefined
+    },
     agreeToTerms: {
         type: Boolean,
     }

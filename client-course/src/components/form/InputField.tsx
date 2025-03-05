@@ -26,7 +26,7 @@ export const InputField: React.FC<InputFieldProps> = ({ id, label, type = "text"
             id={id}
             type={type === "password" && showPassword ? "text" : type}
             placeholder={`Enter your ${label.toLowerCase()}`}
-            className="mt-1 h-10 pr-10 shadow-sm"
+            className="mt-2 h-10 pr-10 shadow-sm"
             {...register(id, {
               required: `${label} is required`,
               ...(id === "password" && {
@@ -47,7 +47,7 @@ export const InputField: React.FC<InputFieldProps> = ({ id, label, type = "text"
             </button>
           )}
         </div>
-        {id && errors[id] && <CardDescription className="text-red-500 text-sm mt-1">{errors[id].message}</CardDescription>}
+        {id && errors[id] && <CardDescription className="text-red-500 dark:text-red-500 text-sm mt-2">{errors[id].message}</CardDescription>}
       </div>
     );
   };

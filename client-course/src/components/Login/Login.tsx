@@ -31,18 +31,21 @@ const Login = () => {
   });
 
   const onSubmit = async (data: { email: string; password: string }) => {
-    console.log("Login Data:", data);
-    const result = (await loginUser(data).unwrap()) as {
-      success: boolean;
-      message: string;
-      data: any;
-      statusCode: number;
-    };
-    if (result.success) {
-      toast.success(`${result.message}`);
-    } else {
-      console.error("Login failed:", result.message);
-    }
+     try {
+      const result = (await loginUser(data).unwrap()) as {
+        success: boolean;
+        message: string;
+        data: any;
+        statusCode: number;
+      };
+      if (result.success) {
+        toast.success(`${result.message}`);
+      }else{
+        console.log(result.message);
+      }
+     } catch (error: any) {    
+     toast.error(`${error.data.message}`)
+     }
   };
 
   return (
@@ -60,7 +63,7 @@ const Login = () => {
       </motion.div>
 
       {/* Login Form Section */}
-      <div className="flex flex-col justify-center items-center w-full md:w-1/2 p-6">
+      <div className="flex flex-col justify-center items-center w-full md:w-1/2 md:p-6 p-0">
         <motion.div
           initial={{ opacity: 0, y: -100 }}
           animate={{ opacity: 1, y: 0 }}
@@ -99,10 +102,10 @@ const Login = () => {
                         className=" h-3"
                       />
                     </div>
-                    <Label htmlFor="agree" className="text-sm text-gray-700">
-                      <CardDescription>
+                    <Label htmlFor="agree" className="text-sm">
+                      
                         Remember Me
-                      </CardDescription>
+                  
                     </Label>
                   </div>
                   <div className="text-right">

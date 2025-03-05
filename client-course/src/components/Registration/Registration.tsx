@@ -37,16 +37,8 @@ export default function Registration() {
       } else {
         toast.error(result.message);
       }
-    } catch (error: unknown) {
-      if (
-        error instanceof Error &&
-        (error as { data?: { message?: string } }).data?.message !==
-          "Invalid ID"
-      ) {
-        toast.error("User is already registered!");
-      } else {
-        toast.error("Username is already used, try a different one!");
-      }
+    } catch (error: any) {
+      toast.error(`${error.data.message}`)
     }
   };
 
@@ -155,20 +147,18 @@ export default function Registration() {
                         {...register("agreeToTerms", {
                           required: "You must agree to the terms",
                         })}
-                        className="accent-indigo-600 h-3"
+                        className="h-3"
                       />
                      </div>
-                      <Label htmlFor="agree" className="text-sm text-gray-700">
-                       <CardDescription>
-                       I agree to the{" "}
-                        <span className="text-indigo-600 font-semibold cursor-pointer hover:underline">
-                          Terms and Conditions
-                        </span>
-                       </CardDescription>
+                      <Label htmlFor="agree" className="text-sm ">
+                   
+                       I agree to the Terms and Conditions
+                       
+                     
                       </Label>
                     </div>
                     {errors.agreeToTerms && (
-                      <CardDescription className="text-red-500 text-sm">
+                      <CardDescription className="text-red-500 dark:text-red-500 text-sm">
                         {errors.agreeToTerms.message}
                       </CardDescription>
                     )}

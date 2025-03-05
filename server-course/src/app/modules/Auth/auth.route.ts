@@ -1,8 +1,6 @@
 import express from 'express';
 // import validateRequest from '../../middlewares/validateRequest';
 import { AuthControllers } from './auth.controller';
-import auth from '../../middlewares/auth';
-import { TURole, USER_ROLE } from './auth.constant';
 // import { AuthValidation } from './auth.validation';
 
 const router = express.Router();
@@ -21,6 +19,10 @@ router.post(
   // validateRequest(AuthValidation.changePasswordValidationSchema),
   AuthControllers.forgotPassword,
 );
+
+// reset-password
+
+router.post('/reset-password', AuthControllers.resetPassword);
 
 router.post(
   '/refresh-token',
