@@ -1,3 +1,4 @@
+import React from "react"
 import {
   Cloud,
   CreditCard,
@@ -31,12 +32,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import UserAvatar from "../Avatar/UserAvatar";
-import { TSToken } from "@/interface";
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/Auth/authSlice";
+import { TSToken } from "@/interface";
 
+interface UserDropdownProps {
+  user: TSToken;
+  username?: string;
+}
 
-const UserDropdownMenu = (user: TSToken) => {
+const UserDropdownMenu: React.FC<UserDropdownProps> = (user) => {
   const dispatch = useAppDispatch();
   
   return (

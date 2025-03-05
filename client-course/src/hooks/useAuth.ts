@@ -4,7 +4,7 @@ import { PersistPartial } from "redux-persist/es/persistReducer";
 import { decodeToken } from "@/lib/decodeToken";
 
 
-interface IToken extends PersistPartial {
+export interface IToken extends PersistPartial {
     token?: string
 }
 

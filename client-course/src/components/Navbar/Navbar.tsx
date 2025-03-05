@@ -14,6 +14,7 @@ import UserDropdownMenu from "@/components/UserDropDownMenu/UserDropDownMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { ModeToggle } from "../ThemeProvider/ModeToggle";
 import { Card } from "../ui/card";
+import { TSToken } from "@/interface";
 
 const Navbar: React.FunctionComponent = () => {
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
@@ -143,7 +144,7 @@ const Navbar: React.FunctionComponent = () => {
 
             <div>
               {isAuthenticated ? (
-                <UserDropdownMenu user={user} />
+                <UserDropdownMenu user={user as TSToken} />
               ) : (
                 <NavLink to="/login">
                   <Button>Login</Button>
