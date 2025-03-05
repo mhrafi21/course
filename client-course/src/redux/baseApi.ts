@@ -1,8 +1,78 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { RootState } from "./store";
+import { Mutex } from "async-mutex"
+import { logout, setToken } from "./features/Auth/authSlice";
+
+// create refresh token functionality 
+// Create a mutex to prevent multiple refresh requests at the same time 
+const mutex = new Mutex;
+
+const baseQuery = fetchBaseQuery(
+  {
+    baseUrl: "http://localhost:5000/api",
+    prepareHeaders(headers, { getState }) {
+      const state = getState() as RootState;
+      const token: string = state.auth.token;
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`)
+      }else{
+        console.log("Token expired!")
+      }
+      return headers
+    },
+    credentials: "include",
+  });
+
+const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
+  // Lock the mutex to prevent concurrent refresh requests
+  await mutex.waitForUnlock();
+
+  let result = await baseQuery(args, api, extraOptions);
+  console.log(result);
+
+  if (result.error && result.error.status === 401) {
+    // If token expired, try to generate refresh token
+    if (!mutex.isLocked()) {
+      const release = await mutex.acquire();
+      try {
+        const refreshResult = await baseQuery({
+          url: "/auth/refresh-token",
+          method: "POST",
+        },
+          api,
+          extraOptions
+        );
+
+        if (refreshResult?.data) {
+          const newToken = refreshResult.data
+          // Update the token in the Redux store
+          api.dispatch(setToken({accessToken: newToken}));
+        } else {
+          api.dispatch(logout());
+        }
+
+        // return the original request with new token ;
+
+        result = await baseQuery(args, api, extraOptions)
+
+
+      } finally {
+        release();
+      }
+    };
+
+  }else{
+    await mutex.waitForUnlock();
+    result = await baseQuery(args, api, extraOptions);
+  }
+
+  return result;
+}
+
 
 export const baseApi = createApi({
   reducerPath: "baseApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ["courses", "Carts", "users"],
   endpoints: (builder) => ({
 
@@ -23,8 +93,8 @@ export const baseApi = createApi({
         body: credentials,
       }),
     }),
-    
-        // forgot password 
+
+    // forgot password 
     forgotPassword: builder.mutation({
       query: (credentials) => ({
         url: "/auth/change-password",
@@ -43,6 +113,13 @@ export const baseApi = createApi({
       })
     }),
 
+    // refresh token generate
+    generateRefreshToken: builder.mutation({
+      query: () => ({
+        url: "/auth/refresh-token",
+        method: "POST",
+      }),
+    }),
 
     createProduct: builder.mutation({
       query: (product) => {
@@ -90,7 +167,7 @@ export const baseApi = createApi({
       },
       invalidatesTags: ({ _id }) => [{ type: "courses", id: _id }],
     }),
-   
+
   }),
 });
 
@@ -99,6 +176,7 @@ export const {
   useLoginMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
+  useGenerateRefreshTokenMutation,
   useCreateProductMutation,
   useGetCoursesQuery,
   useGetCourseBySlugQuery,

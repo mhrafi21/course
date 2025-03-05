@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import {
   Cloud,
   CreditCard,
@@ -35,15 +35,19 @@ import UserAvatar from "../Avatar/UserAvatar";
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/Auth/authSlice";
 import { TSToken } from "@/interface";
+import { useNavigate } from "react-router";
 
 interface UserDropdownProps {
   user: TSToken;
-  username?: string;
 }
 
-const UserDropdownMenu: React.FC<UserDropdownProps> = (user) => {
+const UserDropdownMenu: React.FC<UserDropdownProps> = ({ user }) => {
   const dispatch = useAppDispatch();
-  
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  }
   return (
     <div className="">
       <DropdownMenu>
@@ -128,8 +132,8 @@ const UserDropdownMenu: React.FC<UserDropdownProps> = (user) => {
             <span>API</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-       
-          <DropdownMenuItem onClick={() => dispatch(logout())}>
+
+          <DropdownMenuItem onClick={handleLogout}>
             <LogOut />
             <span>Log out</span>
             <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

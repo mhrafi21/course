@@ -1,25 +1,27 @@
 import { Action, Reducer } from "@reduxjs/toolkit"
-import { persistReducer} from "redux-persist"
+import { persistReducer } from "redux-persist"
 import storage from "redux-persist/lib/storage"
-import { combineReducers } from "@reduxjs/toolkit";
 
-interface IPersist {
-    key: string;
-    storage: typeof storage;
-}
-
-const persistingConfig: IPersist = {
-    key: "root",
-    storage: storage
-}
+// const persistingConfig = {
+//     key: "auth",
+//     storage: storage
+// }
 
 // export const rootReducer = combineReducers({
 //     auth: persistReducer(persistingConfig, authReducer)
 // })
 
 // for reusable;
-export const makePersistReducer = (reducer: Reducer<unknown, Action> ) => {
-    return  combineReducers({
-        auth: persistReducer(persistingConfig, reducer)
-    })
+interface IPersistingConfig {
+    key: string;
+    storage: typeof storage;
+}
+
+const persistingConfig: IPersistingConfig = {
+    key: "auth",
+    storage: storage
+}
+
+export const makePersistReducer = (reducer: Reducer<any, Action<any>>): Reducer<any, Action<any>> => {
+    return persistReducer(persistingConfig, reducer)
 }

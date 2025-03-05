@@ -8,25 +8,30 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { InputField } from "../form/InputField";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import { useLoginMutation } from "@/redux/baseApi";
 import { toast } from "sonner";
 import LoginImg from "../../assets/images/login.svg";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { useAppDispatch } from "@/redux/hooks";
+import { setToken } from "@/redux/features/Auth/authSlice";
 
 const Login = () => {
+  // Use the useLoginMutation hook to get the login mutation
   const navigate = useNavigate();
+  const location = useLocation();
   const [loginUser] = useLoginMutation(undefined);
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "12mhrafi@gmail.com",
+      password: "rafi6440",
     },
   });
 
@@ -40,6 +45,8 @@ const Login = () => {
       };
       if (result.success) {
         toast.success(`${result.message}`);
+        await dispatch(setToken(result.data))
+        navigate(location?.state ? location?.state : "/")
       }else{
         console.log(result.message);
       }

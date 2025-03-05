@@ -31,8 +31,8 @@ export interface IUser  {
     agreeToTerms: boolean
 }
 
-export interface TSToken  {
-    username: string | null;
+export type TSToken = {
+    username: string;
     email: string;
     role: string;
 }
@@ -42,5 +42,5 @@ export interface TToken {
     needsPasswordChange?: boolean;
 }
 export interface AuthState {
-    token: null | string;
+    token:  string;
 }

@@ -1,10 +1,8 @@
-
-
 import { TSToken } from '@/interface';
 import {jwtDecode} from 'jwt-decode';
-export const decodeToken = (token: string | null) => {
+export const decodeToken = (token: string) => {
     if (token) {
-        const decoded = jwtDecode(token);
+        const decoded = jwtDecode(token) ;
         if (decoded) {
             return decoded as TSToken;
         }

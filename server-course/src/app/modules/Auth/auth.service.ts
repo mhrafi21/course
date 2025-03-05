@@ -10,7 +10,7 @@ const registrationUserIntoDB = async (payload: IUser) => {
   // logic here
 
 
-  const { username, email, password, confirmPassword, role,agreeToTerms } = payload;
+  const { username, email, password, confirmPassword, role, agreeToTerms } = payload;
 
   if (password !== confirmPassword) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Passwords do not match');
@@ -50,7 +50,7 @@ const loginUserIntoDB = async (payload: IUser) => {
     throw new AppError(httpStatus.UNAUTHORIZED, 'Password is incorrect!');
   }
 
-  const userObj = { id: user._id ,username: user.username, email: user.email, role: user.role }
+  const userObj = { id: user._id, username: user.username, email: user.email, role: user.role }
 
   // generate tokens
   const accessToken = generateAccessToken(userObj as TTokens);
@@ -106,13 +106,10 @@ export const resetPasswordFromDB = async (payload: { resetToken: string, passwor
   user.resetPasswordExpires = undefined;
   await user.save();
   return user;
-
-
 }
 
 const refreshTokenFromDB = async (payload: string) => {
   const refreshToken = payload;
-
   // logic here
   // check if token is valid
   const decoded = verifyToken(refreshToken, config.jwt_refresh_secret as string) as TTokens;
