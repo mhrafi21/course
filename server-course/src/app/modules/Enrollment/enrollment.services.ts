@@ -24,6 +24,12 @@ const enrollUserIntoDB = async (payload: IEnrolment) => {
     return result;
 }
 
+const getUserEnrollmentsIntoDB = async (payload: { userId: string }) => {
+    const result = await Enrollment.find({ userId: payload.userId }).populate("courseId");
+    return result;
+}
+
 export const enrollmentsServices = {
     enrollUserIntoDB,
+    getUserEnrollmentsIntoDB
 }

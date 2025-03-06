@@ -15,7 +15,18 @@ const enrollMentUser = catchAsync(async(req, res) => {
     })
 })
 
+const getUserEnrollments = catchAsync(async(req,res) => {
+
+    const result = await enrollmentsServices.getUserEnrollmentsIntoDB(req.params as {userId: string});
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User enrollments retrieved successfully!',
+        data: result,
+    })
+})
 
 export const enrollmentControllers = {
-    enrollMentUser
+    enrollMentUser,
+    getUserEnrollments
 }
