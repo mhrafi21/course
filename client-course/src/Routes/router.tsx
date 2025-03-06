@@ -17,6 +17,8 @@ import Login from "@/components/Login/Login";
 import PrivateRoute from "@/components/PrivateRoute/PrivateRoute";
 import ForgotPassword from "@/pages/frontendPages/ForgotPassword/ForgotPassword";
 import ResetPassword from "@/pages/frontendPages/ResetPassword/ResetPassword";
+import Payment from "@/components/paymentForm/PaymentForm";
+import CheckoutPage from "@/components/paymentForm/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
       {
         path: "/courses/",
         Component: () => <Course />,
+      },
+      {
+        path:"/payment",
+        Component: () => <Payment />,
+      },
+      {
+        path: "/checkout",
+        Component: () => <CheckoutPage/>
       },
       {
         path: "/courses/:slug/",

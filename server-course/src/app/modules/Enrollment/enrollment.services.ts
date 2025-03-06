@@ -11,17 +11,25 @@ const enrollUserIntoDB = async (payload: IEnrolment) => {
         throw new AppError(httpStatus.NOT_FOUND, "Missing required fields!")
     }
 
-    // checks if enrolment already exists 
+    // Iterate through the courses and enroll the user into each one
+    const enrolledCourses = [];
 
-    const existingEnrolment = await Enrollment.findOne({ userId, courseId });
+    for (const course of Array.isArray(courseId) ? courseId : [courseId]) {
+        // checks if enrolment already exists 
+        const existingEnrolment = await Enrollment.findOne({ userId, courseId: course });
+        enrolledCourses.push(course);
 
-    if (existingEnrolment) {
-        throw new AppError(httpStatus.CONFLICT, "Enrolment already exists!")
+        if (existingEnrolment) {
+            throw new AppError(httpStatus.CONFLICT, "Enrolment already exists!")
+        }
+        // Create enrolment record 
+        await Enrollment.create({ userId, courseId, paymentId });
     }
 
-    // Create enrolment record 
-    const result = await Enrollment.create({ userId, courseId, paymentId });
-    return result;
+    return enrolledCourses;
+
+
+
 }
 
 const getUserEnrollmentsIntoDB = async (payload: { userId: string }) => {
@@ -33,3 +41,4 @@ export const enrollmentsServices = {
     enrollUserIntoDB,
     getUserEnrollmentsIntoDB
 }
+

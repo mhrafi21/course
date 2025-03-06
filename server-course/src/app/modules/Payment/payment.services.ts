@@ -4,15 +4,15 @@ import Stripe from "stripe";
 import Course from "../Course/course.model";
 import config from "../../config";
 
-const stripe = new Stripe(config.stripe_secret_key as string,{apiVersion: "2025-02-24.acacia"} )
+const stripe = new Stripe(config.stripe_secret_key as string, { apiVersion: "2025-02-24.acacia" })
 
-const createPaymentIntoDB = async(payload: {userId: string, courseId: string}) => {
-    const {userId, courseId} = payload;
+const createPaymentIntoDB = async (payload: { userId: string, courseId: string }) => {
+    const { userId, courseId } = payload;
 
     // check if course exists 
     const course = await Course.findById(courseId);
     if (!course) {
-        throw new AppError(httpStatus.NOT_FOUND,'Course not found');
+        throw new AppError(httpStatus.NOT_FOUND, 'Course not found');
     }
 
     // create payment intent 
@@ -27,7 +27,10 @@ const createPaymentIntoDB = async(payload: {userId: string, courseId: string}) =
         description: `Payment for course ${course.title}`,
     })
 
-    return {clientSecret:paymentIntent.client_secret}
+
+
+
+    return { clientSecret: paymentIntent.client_secret }
 
 }
 

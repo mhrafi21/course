@@ -131,7 +131,7 @@ export const baseApi = createApi({
       },
       invalidatesTags: [{ type: "courses", id: "LIST" }],
     }),
-
+    
     getCourses: builder.query({
       query: (params) => {
         return {
@@ -149,6 +149,26 @@ export const baseApi = createApi({
       }),
       providesTags: (id) => [{ type: "courses", id }],
     }),
+    
+    // payment
+    
+        createPayment: builder.mutation({
+          query: (paymentInfo) => {
+            return {
+              url: "/payment/create-payment",
+              method: "POST",
+              body: paymentInfo,
+            };
+          },
+          invalidatesTags: [{ type: "courses", id: "LIST" }],
+        }),
+
+
+
+
+
+
+
     updateProductById: builder.mutation({
       query: ({ productId, ...product }) => ({
         url: `/courses/${productId}`,
@@ -180,6 +200,7 @@ export const {
   useCreateProductMutation,
   useGetCoursesQuery,
   useGetCourseBySlugQuery,
+  useCreatePaymentMutation,
   useUpdateProductByIdMutation,
   useDeleteSingleProductMutation,
 } = baseApi;
