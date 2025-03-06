@@ -8,16 +8,33 @@ const createCourseIntoDB = async (payload: ICourse) => {
 }
 
 
-const getCoursesFromDB = async (payload: { page: string, limit: string }) => {
+const getCoursesFromDB = async (payload:
+    { page: string, limit: string, search: string }
+) => {
+
     // logic here
-    const { page, limit } = payload;
+    const { page, limit, search } = payload;
+
     const pageNum = Number(page) || 1;
     const limitPage = Number(limit) || 10;
     const skip = (pageNum - 1) * limitPage;
     const totalData = await Course.find({}).countDocuments();
-    const data = await Course.find().skip(skip).limit(limitPage).populate('instructor', 'username');
-    return {totalData, data};
+
+    const query: { title?: { $regex: string, $options: string }, status?: string, } = {};
+  
+    if (search) {
+        query.title = {$regex: search, $options: "i"};
+        query.status = "approved";
+        const data = await Course.find(query).populate("instructor", "username").skip(skip).limit(limitPage);
+        return { totalData, data };
+    } else {
+        query.status = "approved";
+        const data = await Course.find(query).populate("instructor", "username").skip(skip).limit(limitPage);
+        return { totalData, data };
+    }
 }
+
+
 
 const getCourseByInstructorIdFromDB = async (instructorId: string) => {
     // logic here
@@ -38,7 +55,7 @@ const approvedCourseInDB = async (courseId: string) => {
 
 const getCourseByIdFromDB = async (slug: string) => {
     // logic here
-    const result = await Course.findOne({slug});
+    const result = await Course.findOne({ slug });
     return result;
 }
 

@@ -1,0 +1,20 @@
+import httpStatus from "http-status";
+import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
+import { enrollmentsServices } from "./enrollment.services";
+
+const enrollMentUser = catchAsync(async(req, res) => {
+   
+    const result = await enrollmentsServices.enrollUserIntoDB(req.body);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Successfully enrolled!',
+        data: result,
+    })
+})
+
+
+export const enrollmentControllers = {
+    enrollMentUser
+}

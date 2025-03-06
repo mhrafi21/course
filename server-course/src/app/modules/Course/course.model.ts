@@ -4,8 +4,9 @@ import { ICourse } from "./course.interface";
 const courseSchema = new Schema<ICourse>({
     title: {
         type: String,
-        unique: true, // required: true, // Uncomment when adding required field. Unique title for each course.
-        required: true
+        required: [true, 'Title is required'],
+        unique: true 
+        
     },
     description: {
         type: String,
@@ -17,7 +18,7 @@ const courseSchema = new Schema<ICourse>({
     },
     slug: {
         type: String,
-        required: true
+        unique: true
     },
     instructor: {
         type: Schema.Types.ObjectId,

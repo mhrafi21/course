@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { IEnrolment } from "./enrolment.interface";
+import { IEnrolment } from "./enrollment.interface";
 
 const EnrollmentSchema = new Schema<IEnrolment>({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },

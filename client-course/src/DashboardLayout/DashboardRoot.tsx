@@ -1,165 +1,153 @@
-import React, { useState } from "react";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
-import { VscChromeClose, VscMenu } from "react-icons/vsc";
-import { MdOutlineManageHistory } from "react-icons/md";
-import { MdDashboard } from "react-icons/md";
+import React from "react";
 import { NavLink, Outlet } from "react-router";
-import Dashboard from "../pages/DahboardPages/Dashboard/Dashboard";
+import { VscChromeClose, VscMenu } from "react-icons/vsc";
+import { MdOutlineManageHistory, MdDashboard } from "react-icons/md";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { FiLogOut } from "react-icons/fi";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import Header from "@/pages/DahboardPages/components/Header/Header";
+import { ModeToggle } from "@/components/ThemeProvider/ModeToggle";
+
+const menuItems = [
+  { title: "Dashboard", icon: <MdDashboard />, path: "/dashboard" },
+  {
+    title: "Manage",
+    icon: <MdOutlineManageHistory />,
+    submenu: [
+      { title: "Users", path: "/dashboard/manage/users" },
+      { title: "Courses", path: "/dashboard/manage/products" },
+      { title: "Enrolment", path: "/dashboard/manage/orders" },
+    ],
+  },
+  { title: "Reports", icon: "📊", path: "/dashboard/reports" },
+  { title: "Settings", icon: "🔧", path: "/dashboard/settings" },
+];
 
 const DashboardRoot: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [submenuOpen, setSubmenuOpen] = useState<number | null>(null);
-
-  const toggleSidebar = () => setIsOpen(!isOpen);
-
-  const toggleSubmenu = (index: number) => {
-    setSubmenuOpen(submenuOpen === index ? null : index);
-  };
-
-  const menuItems = [
-    {
-      title: "Dashboard",
-      icon: <MdDashboard />,
-      path: "/dashboard",
-    },
-    {
-      title: "Manage",
-      icon: <MdOutlineManageHistory />,
-      submenu: [
-        { title: "Users", path: "/dashboard/manage/users" },
-        { title: "Products", path: "/dashboard/manage/products" },
-        { title: "Orders", path: "/dashboard/manage/orders" },
-      ],
-      path: null,
-    },
-    {
-      title: "Manage",
-      icon: <MdOutlineManageHistory />,
-      submenu: [
-        { title: "Users", path: "/dashboard/manage/users" },
-        { title: "Products", path: "/dashboard/manage/products" },
-        { title: "Orders", path: "/dashboard/manage/orders" },
-      ],
-      path: null,
-    },
-    {
-      title: "Reports",
-      icon: "📊",
-      path: "/dashboard/reports",
-    },
-    {
-      title: "Settings",
-      icon: "🔧",
-      path: "/dashboard/settings",
-    },
-    {
-      title: "Settings",
-      icon: "🔧",
-      path: "/dashboard/settings",
-    },
-
-  ];
-
   return (
-    <div className="flex h-screen">
-      {/* Overlay for mobile */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 lg:hidden"
-          onClick={toggleSidebar}
-        ></div>
-      )}
-
-      {/* Sidebar */}
-      <div
-        className={`fixed z-30 h-full w-48 bg-gray-800 text-white transition-transform lg:static lg:translate-x-0 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div className="flex items-center justify-between px-6 py-4 lg:py-6">
-          <h1 className="text-lg font-bold">Dashboard</h1>
-          <button className="text-xl lg:hidden ml-5" onClick={toggleSidebar}>
-            <VscChromeClose />
-          </button>
+    <div className="">
+      <div>
+      <div className="flex h-screen flex-col">
+      {/* Top Navbar */}
+      <header className="p-4 flex justify-between items-center">
+        <h1 className="text-xl font-bold">Admin Dashboard</h1>
+        <div className="flex items-center gap-4">
+          <IoMdNotificationsOutline className="text-2xl cursor-pointer" />
+          <ModeToggle />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar className="cursor-pointer">
+                <AvatarImage src="/path-to-avatar.jpg" alt="User Avatar" />
+                <AvatarFallback>AD</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>Messages</DropdownMenuItem>
+              <DropdownMenuItem>Language</DropdownMenuItem>
+              <DropdownMenuItem className="text-red-500">Logout</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-        <nav className="mt-4 space-y-2">
-          {menuItems?.map((item, index) => (
-            <div key={index}>
-              {item.path === null ? (
-                <div>
-                  <button
-                    className="flex w-full items-center justify-between px-4 py-2 text-sm font-medium hover:bg-gray-700"
-                    onClick={() => item.submenu && toggleSubmenu(index)}
-                  >
-                    <span className="flex items-center gap-2">
-                      {item.icon} {item.title}
-                    </span>
-                    {item.submenu && (
-                      <span>
-                        {submenuOpen === index ? (
-                          <FaAngleUp />
-                        ) : (
-                          <FaAngleDown />
-                        )}
-                      </span>
-                    )}
-                  </button>
-                </div>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button className="lg:hidden rounded">
+              <VscMenu />
+            </Button>
+          </SheetTrigger>
+        </Sheet>
+      </header>
+      
+      <div className="flex flex-1">
+        {/* Sidebar for Desktop */}
+        <aside className="hidden lg:flex w-64 border-r-2flex-col p-4">
+          <nav className="space-y-2">
+            {menuItems.map((item, index) => (
+              item.submenu ? (
+                <Accordion key={index} type="single" collapsible>
+                  <AccordionItem value={item.title}>
+                    <AccordionTrigger className="flex items-center gap-2 px-4 py-2 text-sm font-medium">
+                      {item.title}
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      {item.submenu.map((subitem, subIndex) => (
+                        <NavLink
+                          key={subIndex}
+                          to={subitem.path}
+                          className="block px-8 py-2 text-sm text-gray-300 hover:text-gray-200 dark:hover:bg-gray-700"
+                        >
+                          {subitem.title}
+                        </NavLink>
+                      ))}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               ) : (
-                <NavLink to={`${item.path}`}>
-                  <button
-                    className="flex w-full items-center justify-between px-4 py-2 text-sm font-medium hover:bg-gray-700"
-                    onClick={() => item.submenu && toggleSubmenu(index)}
-                  >
-                    <span className="flex items-center gap-2">
-                      {item.icon} {item.title}
-                    </span>
-                    {item.submenu && (
-                      <span>
-                        {submenuOpen === index ? (
-                          <FaAngleUp />
-                        ) : (
-                          <FaAngleDown />
-                        )}
-                      </span>
-                    )}
-                  </button>
+                <NavLink key={index} to={item.path} className="flex items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-gray-700">
+                  {item.title}
                 </NavLink>
-              )}
-              {item.submenu && (
-                <div
-                  className={`overflow-hidden transition-all ${
-                    submenuOpen === index ? "max-h-screen" : "max-h-0"
-                  }`}
-                >
-                  {item.submenu.map((subitem, subIndex) => (
-                    <NavLink
-                      key={subIndex}
-                      to={subitem.path}
-                      className="block px-8 py-2 text-sm text-gray-300 hover:bg-gray-700"
-                    >
-                      {subitem.title}
-                    </NavLink>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </nav>
-      </div>
+              )
+            ))}
+          </nav>
+        </aside>
 
-      {/* Content */}
-      <div className="flex-1">
-        <button
-          className="m-4 p-2 text-white bg-gray-800 rounded lg:hidden"
-          onClick={toggleSidebar}
-        >
-          <VscMenu />
-        </button>
-        <div className="p-4">
-          <Dashboard />
+        {/* Mobile Sidebar */}
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button className="m-4 p-2 lg:hidden bg-gray-800 text-white rounded">
+              <VscMenu />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-64 bg-gray-900 text-white p-4">
+            <div className="flex justify-between items-center">
+              <h1 className="text-lg font-bold">Dashboard</h1>
+              <SheetTrigger asChild>
+                <Button variant="ghost">
+                  <VscChromeClose />
+                </Button>
+              </SheetTrigger>
+            </div>
+            <nav className="mt-4 space-y-2">
+              {menuItems.map((item, index) => (
+                item.submenu ? (
+                  <Accordion key={index} type="single" collapsible>
+                    <AccordionItem value={item.title}>
+                      <AccordionTrigger className="flex items-center gap-2 px-4 py-2 text-sm font-medium">
+                        {item.icon} {item.title}
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        {item.submenu.map((subitem, subIndex) => (
+                          <NavLink
+                            key={subIndex}
+                            to={subitem.path}
+                            className="block px-8 py-2 text-sm text-gray-300 hover:bg-gray-700"
+                          >
+                            {subitem.title}
+                          </NavLink>
+                        ))}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                ) : (
+                  <NavLink key={index} to={item.path} className="flex items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-gray-700">
+                    {item.icon} {item.title}
+                  </NavLink>
+                )
+              ))}
+            </nav>
+          </SheetContent>
+        </Sheet>
+
+        {/* Main Content */}
+        <main className="flex-1 p-4">
           <Outlet />
-        </div>
+        </main>
+      </div>
+    </div>
       </div>
     </div>
   );

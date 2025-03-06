@@ -18,8 +18,11 @@ const createCourse = catchAsync(async (req, res) => {
 });
 
 const getCourses = catchAsync(async (req, res) => {
-    const { page, limit } = req.query;
-    const result = await courseServices.getCoursesFromDB({ page, limit } as { page: string, limit: string });
+    const { page, limit, search } = req.query;
+    const result = await courseServices.getCoursesFromDB(
+        { page, limit, search } as
+         { page: string, limit: string, search: string }
+        );
 
     sendResponse(res, {
         statusCode: httpStatus.OK,

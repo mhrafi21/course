@@ -118,7 +118,6 @@ const refreshTokenFromDB = async (payload: string) => {
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
   }
-
   const userObj = { username: user.username, email: user.email, role: user.role }
   const accessToken = generateAccessToken(userObj as TTokens);
   const newRefreshToken = generateRefreshToken(userObj as TTokens);
