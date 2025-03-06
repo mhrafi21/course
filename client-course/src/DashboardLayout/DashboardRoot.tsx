@@ -6,10 +6,10 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import Header from "@/pages/DahboardPages/components/Header/Header";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/ThemeProvider/ModeToggle";
 
 const menuItems = [
@@ -29,42 +29,84 @@ const menuItems = [
 
 const DashboardRoot: React.FC = () => {
   return (
-    <div className="">
-      <div>
-      <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col">
       {/* Top Navbar */}
-      <header className="p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold">Admin Dashboard</h1>
+      <header className="p-4 flex justify-between items-center shadow-md bg-white dark:bg-gray-900 sticky top-0 z-50 w-full">
+        <div className="flex items-center gap-2">
+          {/* Mobile Menu Button */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button className="lg:hidden p-2 bg-gray-800 text-white rounded">
+                <VscMenu size={24} />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-64 bg-gray-900 text-white p-4">
+              <div className="flex justify-between items-center">
+                <h1 className="text-lg font-bold">Dashboard</h1>
+                <SheetTrigger asChild>
+                  <Button >
+                      close
+                  </Button>
+                </SheetTrigger>
+              </div>
+              <nav className="mt-4 space-y-2">
+                {menuItems.map((item, index) => (
+                  item.submenu ? (
+                    <Accordion key={index} type="single" collapsible>
+                      <AccordionItem value={item.title}>
+                        <AccordionTrigger className="flex items-center gap-2 px-4 py-2 text-sm font-medium">
+                          {item.icon} {item.title}
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          {item.submenu.map((subitem, subIndex) => (
+                            <NavLink key={subIndex} to={subitem.path} className="block px-8 py-2 text-sm hover:bg-gray-700">
+                              {subitem.title}
+                            </NavLink>
+                          ))}
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  ) : (
+                    <NavLink key={index} to={item.path} className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-700">
+                      {item.icon} {item.title}
+                    </NavLink>
+                  )
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
+          <h1 className="text-xl font-bold hidden lg:block">Admin Dashboard</h1>
+        </div>
+        
+        {/* Search Bar */}
+        <div className="hidden md:flex items-center w-full max-w-md">
+          <Input placeholder="Search..." className="w-full" />
+        </div>
+        
+        {/* Right Section */}
         <div className="flex items-center gap-4">
           <IoMdNotificationsOutline className="text-2xl cursor-pointer" />
           <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer">
-                <AvatarImage src="/path-to-avatar.jpg" alt="User Avatar" />
-                <AvatarFallback>AD</AvatarFallback>
+                <AvatarImage src="https://via.placeholder.com/40" alt="User" />
+                <AvatarFallback>U</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Messages</DropdownMenuItem>
               <DropdownMenuItem>Language</DropdownMenuItem>
-              <DropdownMenuItem className="text-red-500">Logout</DropdownMenuItem>
+              <DropdownMenuItem className="text-red-500"><FiLogOut />Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button className="lg:hidden rounded">
-              <VscMenu />
-            </Button>
-          </SheetTrigger>
-        </Sheet>
       </header>
       
       <div className="flex flex-1">
-        {/* Sidebar for Desktop */}
-        <aside className="hidden lg:flex w-64 border-r-2flex-col p-4">
+        {/* Sidebar (Desktop) */}
+        <aside className="hidden lg:flex w-64 border-r-2 shadow-lg flex-col p-4 bg-gray-100 dark:bg-gray-800">
           <nav className="space-y-2">
             {menuItems.map((item, index) => (
               item.submenu ? (
@@ -75,11 +117,7 @@ const DashboardRoot: React.FC = () => {
                     </AccordionTrigger>
                     <AccordionContent>
                       {item.submenu.map((subitem, subIndex) => (
-                        <NavLink
-                          key={subIndex}
-                          to={subitem.path}
-                          className="block px-8 py-2 text-sm text-gray-300 hover:text-gray-200 dark:hover:bg-gray-700"
-                        >
+                        <NavLink key={subIndex} to={subitem.path} className="block px-8 py-2 text-sm hover:bg-gray-700">
                           {subitem.title}
                         </NavLink>
                       ))}
@@ -88,66 +126,17 @@ const DashboardRoot: React.FC = () => {
                 </Accordion>
               ) : (
                 <NavLink key={index} to={item.path} className="flex items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-gray-700">
-                  {item.title}
+                  {item.icon} {item.title}
                 </NavLink>
               )
             ))}
           </nav>
         </aside>
 
-        {/* Mobile Sidebar */}
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button className="m-4 p-2 lg:hidden bg-gray-800 text-white rounded">
-              <VscMenu />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-64 bg-gray-900 text-white p-4">
-            <div className="flex justify-between items-center">
-              <h1 className="text-lg font-bold">Dashboard</h1>
-              <SheetTrigger asChild>
-                <Button variant="ghost">
-                  <VscChromeClose />
-                </Button>
-              </SheetTrigger>
-            </div>
-            <nav className="mt-4 space-y-2">
-              {menuItems.map((item, index) => (
-                item.submenu ? (
-                  <Accordion key={index} type="single" collapsible>
-                    <AccordionItem value={item.title}>
-                      <AccordionTrigger className="flex items-center gap-2 px-4 py-2 text-sm font-medium">
-                        {item.icon} {item.title}
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        {item.submenu.map((subitem, subIndex) => (
-                          <NavLink
-                            key={subIndex}
-                            to={subitem.path}
-                            className="block px-8 py-2 text-sm text-gray-300 hover:bg-gray-700"
-                          >
-                            {subitem.title}
-                          </NavLink>
-                        ))}
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                ) : (
-                  <NavLink key={index} to={item.path} className="flex items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-gray-700">
-                    {item.icon} {item.title}
-                  </NavLink>
-                )
-              ))}
-            </nav>
-          </SheetContent>
-        </Sheet>
-
         {/* Main Content */}
         <main className="flex-1 p-4">
           <Outlet />
         </main>
-      </div>
-    </div>
       </div>
     </div>
   );
