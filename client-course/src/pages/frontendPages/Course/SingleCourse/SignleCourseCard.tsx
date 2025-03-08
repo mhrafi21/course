@@ -1,79 +1,87 @@
-import { useState } from "react";
-import { FaStar, FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation, useSearchParams } from "react-router";
+import { useAuth } from "@/hooks/useAuth"; // Custom hook to check authentication
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Users, Clock, ShoppingCart } from "lucide-react";
+import { ICourse } from "@/interface";
 
-const CourseDetails = () => {
-  const [openSection, setOpenSection] = useState<number | null>(null);
+const CourseDetails = ({ course, isLoading }: { course?: ICourse; isLoading: boolean }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isAuthenticated } = useAuth(); // Check if user is logged in
+  const [isRedirecting, setIsRedirecting] = useState<true | false>(false);
 
-  const toggleSection = (index: number) => {
-    setOpenSection(openSection === index ? null : index);
-  };
 
-  const course = {
-    title: "Full-Stack Web Development with MERN",
-    image: "https://source.unsplash.com/800x400/?coding",
-    instructor: "Mahdi Hasan Rafi",
-    rating: 4.8,
-    description:
-      "Master the MERN stack and become a full-stack web developer. Learn React, Node.js, Express, and MongoDB with hands-on projects.",
-    curriculum: [
-      { title: "Introduction to MERN", content: "Overview of the MERN stack and setup." },
-      { title: "Frontend with React", content: "Building UI components with React and Tailwind CSS." },
-      { title: "Backend with Node.js", content: "Creating APIs with Express and MongoDB." },
-      { title: "Authentication & Deployment", content: "JWT authentication and deploying apps." },
-    ],
+  useEffect(() => {
+    if (isRedirecting && isAuthenticated) {
+      setIsRedirecting(false);
+      navigate(location.pathname); // Return to the course details page
+    }
+
+  }, [isAuthenticated, isRedirecting, navigate, location.pathname]);
+
+  const handleBuyNow = () => {
+    if (!isAuthenticated) {
+      setIsRedirecting(true);
+      navigate(`/login?redirect=${encodeURIComponent(location.pathname)}`); // Redirect to login with return URL
+    } else {
+      navigate(`/checkout/`); // Proceed to checkout
+    }
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      {/* Course Hero Section */}
-      <div className="relative">
-        <img src={course.image} alt={course.title} className="w-full rounded-lg" />
-        <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-white p-6 rounded-lg">
-          <h1 className="text-3xl font-bold">{course.title}</h1>
-          <p className="mt-2 text-lg">By {course.instructor}</p>
-          <div className="flex items-center mt-2">
-            {[...Array(5)].map((_, i) => (
-              <FaStar key={i} className={`text-yellow-400 ${i < course.rating ? '' : 'opacity-50'}`} />
-            ))}
-            <span className="ml-2">({course.rating})</span>
-          </div>
-          <button className="mt-4 bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded text-white">Enroll Now</button>
-        </div>
+    <div className="container mx-auto px-4 lg:px-16 py-10 flex flex-col lg:flex-row gap-8">
+      {/* Left - Course Details */}
+      <div className="flex-1">
+        {isLoading ? (
+          <Skeleton className="w-full h-80 rounded-xl" />
+        ) : (
+          <img src={course?.thumbnail} alt={course?.title} className="w-full h-80 object-cover rounded-xl shadow-lg" />
+        )}
+
+        <h1 className="text-3xl font-bold mt-6">
+          {isLoading ? <Skeleton className="w-2/3 h-8" /> : course?.title}
+        </h1>
+
+        <p className="text-gray-600 text-lg mt-2">
+          {isLoading ? <Skeleton className="w-full h-6" /> : course?.description}
+        </p>
+
+        <p className="text-gray-700 mt-6 text-lg">
+          <strong>Instructor:</strong> {isLoading ? <Skeleton className="w-32 h-6 inline-block" /> : course?.instructor}
+        </p>
       </div>
 
-      {/* Course Description */}
-      <div className="mt-6">
-        <h2 className="text-2xl font-semibold">Course Description</h2>
-        <p className="mt-2 text-gray-700">{course.description}</p>
-      </div>
+      {/* Right - Buy Now Section */}
+      <Card className="w-full lg:w-96 h-fit p-5 sticky top-20 shadow-xl">
+        <CardContent>
+          <h2 className="text-2xl font-semibold mb-3">
+            {isLoading ? <Skeleton className="w-16 h-6" /> : `$${course?.price.toFixed(2)}`}
+          </h2>
 
-      {/* Course Curriculum */}
-      <div className="mt-6">
-        <h2 className="text-2xl font-semibold">Course Curriculum</h2>
-        <div className="mt-2">
-          {course.curriculum.map((section, index) => (
-            <div key={index} className="mt-4 border-b">
-              <button
-                className="flex justify-between w-full text-left text-lg font-medium py-2"
-                onClick={() => toggleSection(index)}
-              >
-                {section.title}
-                {openSection === index ? <FaChevronUp /> : <FaChevronDown />}
-              </button>
-              {openSection === index && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  className="p-2 text-gray-700"
-                >
-                  {section.content}
-                </motion.div>
-              )}
+          <Button
+            onClick={handleBuyNow}
+            disabled={isLoading || isRedirecting}
+            className="w-full py-2 text-lg flex items-center gap-2"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            {isRedirecting ? "Redirecting..." : "Buy Now"}
+          </Button>
+
+          <div className="mt-6 space-y-3 text-gray-700 text-sm">
+            <div className="flex items-center gap-2">
+              <Users className="w-5 h-5 text-blue-500" />
+              {isLoading ? <Skeleton className="w-40 h-6" /> : <span>{course?.studentsEnrolled} Students Enrolled</span>}
             </div>
-          ))}
-        </div>
-      </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-green-500" />
+              {isLoading ? <Skeleton className="w-28 h-6" /> : <span>Duration: {course?.duration}</span>}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

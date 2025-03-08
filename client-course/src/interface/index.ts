@@ -1,14 +1,19 @@
-export interface ICourse {
-    _id?: string;
+export interface ICourse  {
     title: string;
+    category: string;
+    category_slug: string;
     description: string;
-    slug: string;
     price: number;
+    discountPrice: number;
+    duration?: string;
+    thumbnail: string;
+    language: string;
+    lesson: number;
+    slug: string;
     instructor?: string;
-    studentEnrolled?: string[];
+    studentEnrolled?: string;
     status: "pending" | "approved"
 }
-
 export interface FormData {
     username: string;
     email: string;

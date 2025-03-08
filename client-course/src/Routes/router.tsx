@@ -35,17 +35,18 @@ const router = createBrowserRouter([
         path: "/courses/",
         Component: () => <Course />,
       },
+      
       {
-        path:"/payment",
+        path: "/course/:slug/",
+        Component: () => <SingleCourse />,
+      },
+      {
+        path:"/payment/",
         Component: () => <Payment />,
       },
       {
         path: "/checkout",
         Component: () => <CheckoutPage/>
-      },
-      {
-        path: "/courses/:slug/",
-        Component: () => <SingleCourse />,
       },
       {
         path: "/sign-up/",

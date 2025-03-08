@@ -22,7 +22,7 @@ const Course: React.FC = () => {
     page,
     limit,
   });
-
+  console.log(courses);
   useEffect(() => {
     // Ensure URL stays updated with current page & limit
     setSearchParams({ page: String(page), limit: String(limit) });

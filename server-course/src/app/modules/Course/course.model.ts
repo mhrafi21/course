@@ -8,12 +8,37 @@ const courseSchema = new Schema<ICourse>({
         unique: true 
         
     },
+    category: {
+        type: String,
+        required: true,
+
+    },
+    language: {
+        type: String,
+        required: true,
+    },
+    lesson: {
+        type: Number,
+        required: true
+    },
+    category_slug: {
+       type: String,
+       required: true 
+    },
     description: {
         type: String,
         required: true
     },
     price: {
         type: Number,
+        required: true
+    },
+    discountPrice: {
+        type: Number,
+        required: true
+    },
+    thumbnail: {
+        type: String,
         required: true
     },
     slug: {
@@ -24,6 +49,9 @@ const courseSchema = new Schema<ICourse>({
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
+    },
+    duration: {
+        type: String,
     },
     status: {
         type: String,

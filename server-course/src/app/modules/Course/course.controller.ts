@@ -6,9 +6,18 @@ import { ICourse } from "./course.interface";
 import { generateSlug } from "../../utils/generateSlug";
 
 const createCourse = catchAsync(async (req, res) => {
-    const { title, description, price } = req.body;
+    const { title,
+        category,
+        description,
+        price,
+        thumbnail,
+        discountPrice,
+        lesson,
+        language
+    } = req.body;
     const slug = generateSlug(title as string);
-    const result = await courseServices.createCourseIntoDB({ title, description, price, slug, instructor: req.user.id } as ICourse);
+    const category_slug = generateSlug(category as string);
+    const result = await courseServices.createCourseIntoDB({ title, category, category_slug, description, price, slug, instructor: req.user.id, thumbnail, discountPrice, lesson, language } as ICourse);
     sendResponse(res, {
         statusCode: httpStatus.CREATED,
         success: true,
@@ -21,8 +30,8 @@ const getCourses = catchAsync(async (req, res) => {
     const { page, limit, search } = req.query;
     const result = await courseServices.getCoursesFromDB(
         { page, limit, search } as
-         { page: string, limit: string, search: string }
-        );
+        { page: string, limit: string, search: string }
+    );
 
     sendResponse(res, {
         statusCode: httpStatus.OK,

@@ -15,7 +15,7 @@ interface CourseCardProps {
 
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   return (
-    <Link to={`/courses/${course?.slug}`}>
+    <Link to={`/course/${course?.slug}`}>
       <Card key={course?._id}>
         <CardHeader>
           <CardTitle>{course?.title}</CardTitle>
