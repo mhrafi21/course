@@ -13,7 +13,8 @@ const createCourse = catchAsync(async (req, res) => {
         thumbnail,
         discountPrice,
         lesson,
-        language
+        language,
+     
     } = req.body;
     const slug = generateSlug(title as string);
     const category_slug = generateSlug(category as string);
@@ -27,10 +28,10 @@ const createCourse = catchAsync(async (req, res) => {
 });
 
 const getCourses = catchAsync(async (req, res) => {
-    const { page, limit, search } = req.query;
+    const { page, limit, search,status } = req.query;
     const result = await courseServices.getCoursesFromDB(
-        { page, limit, search } as
-        { page: string, limit: string, search: string }
+        { page, limit, search, status } as
+        { page: string, limit: string, search: string, status: string }
     );
 
     sendResponse(res, {

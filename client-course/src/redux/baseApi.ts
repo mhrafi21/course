@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "./store";
 import { Mutex } from "async-mutex"
 import { logout, setToken } from "./features/Auth/authSlice";
-
 // create refresh token functionality 
 // Create a mutex to prevent multiple refresh requests at the same time 
 const mutex = new Mutex;
@@ -13,11 +12,11 @@ const baseQuery = fetchBaseQuery(
     prepareHeaders(headers, { getState }) {
       const state = getState() as RootState;
       const token: string = state.auth.token;
+      console.log(token);
       if (token) {
         headers.set("Authorization", `Bearer ${token}`)
-      }else{
-        console.log("Token expired!")
       }
+
       return headers
     },
     credentials: "include",
@@ -25,12 +24,9 @@ const baseQuery = fetchBaseQuery(
 
 const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
   // Lock the mutex to prevent concurrent refresh requests
-  await mutex.waitForUnlock();
-
   let result = await baseQuery(args, api, extraOptions);
   console.log(result);
-
-  if (result.error && result.error.status === 401) {
+  if (result.error) {
     // If token expired, try to generate refresh token
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
@@ -44,9 +40,10 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
         );
 
         if (refreshResult?.data) {
-          const newToken = refreshResult.data
+          const newToken = refreshResult.data as {data: string, success: boolean, message: string}
+          console.log(newToken.data);
           // Update the token in the Redux store
-          api.dispatch(setToken({accessToken: newToken}));
+          api.dispatch(setToken({ accessToken: newToken?.data }));
         } else {
           api.dispatch(logout());
         }
@@ -61,9 +58,9 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
       }
     };
 
-  }else{
+  } else {
     await mutex.waitForUnlock();
-    result = await baseQuery(args, api, extraOptions);
+    // result = await baseQuery(args, api, extraOptions);
   }
 
   return result;
@@ -131,7 +128,7 @@ export const baseApi = createApi({
       },
       invalidatesTags: [{ type: "courses", id: "LIST" }],
     }),
-    
+
     getCourses: builder.query({
       query: (params) => {
         return {
@@ -149,19 +146,19 @@ export const baseApi = createApi({
       }),
       providesTags: (id) => [{ type: "courses", id }],
     }),
-    
+
     // payment
-    
-        createPayment: builder.mutation({
-          query: (paymentInfo) => {
-            return {
-              url: "/payment/create-payment",
-              method: "POST",
-              body: paymentInfo,
-            };
-          },
-          invalidatesTags: [{ type: "courses", id: "LIST" }],
-        }),
+
+    createPayment: builder.mutation({
+      query: (paymentInfo) => {
+        return {
+          url: "/payment/create-payment",
+          method: "POST",
+          body: paymentInfo,
+        };
+      },
+      invalidatesTags: [{ type: "courses", id: "LIST" }],
+    }),
 
 
 

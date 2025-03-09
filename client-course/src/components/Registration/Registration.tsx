@@ -8,10 +8,12 @@ import { IUser } from "@/interface";
 import { InputField } from "../form/InputField";
 import { motion } from "framer-motion";
 import singUpImg from "../../assets/images/login.svg";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { Input } from "../ui/input";
 export default function Registration() {
   const navigate = useNavigate();
+  const location = useLocation();
+  
   const [signUpUser] = useSignupMutation();
   const {
     register,
@@ -31,14 +33,14 @@ export default function Registration() {
 
   const onSubmit = async (data: IUser) => {
     try {
-      const result = await signUpUser(data).unwrap();
-      if (result.success) {
+      const result = await signUpUser(data).unwrap()
+      if (result?.success) {
         toast.success("Registration successful!");
-      } else {
-        toast.error(result.message);
+        navigate(`/login${location?.search}`)
       }
     } catch (error: any) {
-      toast.error(`${error.data.message}`)
+      console.log(error);
+      toast.error(`${error?.data?.message}`)
     }
   };
 
@@ -173,7 +175,7 @@ export default function Registration() {
                 Already have an account?{" "}
                 <span
                   className="text-indigo-600 font-semibold cursor-pointer hover:underline"
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate(`/login${location?.search}`)}
                 >
                   Login here
                 </span>

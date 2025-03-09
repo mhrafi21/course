@@ -6,15 +6,16 @@ import { IUser } from "@/interface";
 import { CardDescription } from "../ui/card";
 
 interface InputFieldProps {
-  id?: keyof IUser;
+  id?: keyof IUser | string;
   label: string;
   type?: string;
+  defaultValue?: any;
   register?: any;
   errors?: any;
   watch?: any;
 }
 
-export const InputField: React.FC<InputFieldProps> = ({ id, label, type = "text", register, errors, watch }) => {
+export const InputField: React.FC<InputFieldProps> = ({ id, label, type = "text", defaultValue, register, errors, watch }) => {
     const [showPassword, setShowPassword] = useState(false);
     return (
       <div>
@@ -25,6 +26,7 @@ export const InputField: React.FC<InputFieldProps> = ({ id, label, type = "text"
           <Input
             id={id}
             type={type === "password" && showPassword ? "text" : type}
+            defaultValue={defaultValue}
             placeholder={`Enter your ${label.toLowerCase()}`}
             className="mt-2 h-10 pr-10 shadow-sm"
             {...register(id, {

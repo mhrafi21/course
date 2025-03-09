@@ -6,13 +6,14 @@ import CourseCard from "./CourseCard";
 import CustomPagination from "@/components/CustomPagination/CustomPagination";
 import { CardSkeleton } from "@/components/Skeleton/Skeleton";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Course: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Get values from URL, defaulting to page 1 & limit 6
   const page = Number(searchParams.get("page")) || 1;
-  const limit = Number(searchParams.get("limit")) || 6;
+  const limit = Number(searchParams.get("limit")) || 10;
 
   const {
     data: courses,
@@ -22,7 +23,7 @@ const Course: React.FC = () => {
     page,
     limit,
   });
-  console.log(courses);
+
   useEffect(() => {
     // Ensure URL stays updated with current page & limit
     setSearchParams({ page: String(page), limit: String(limit) });
@@ -39,7 +40,13 @@ const Course: React.FC = () => {
         {isLoading &&
           Array.from({ length: limit }, (_, index) => index).map((_, index) => (
             <Card>
-              <CardSkeleton key={index} />
+              <div className="flex items-center space-x-4 min-h-[135px]">
+                <div className="space-y-2 w-full px-4">
+                  <Skeleton className="h-4 w-[250px]" />
+                  <Skeleton className="h-4 w-[200px]" />
+                  <Skeleton className="h-4 w-full" />
+                </div>
+              </div>
             </Card>
           ))}
       </div>

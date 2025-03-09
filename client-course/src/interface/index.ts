@@ -1,4 +1,5 @@
 export interface ICourse  {
+    _id?: string;
     title: string;
     category: string;
     category_slug: string;
@@ -37,6 +38,7 @@ export interface IUser  {
 }
 
 export type TSToken = {
+    id?: string;
     username: string;
     email: string;
     role: string;

@@ -9,11 +9,11 @@ const createCourseIntoDB = async (payload: ICourse) => {
 
 
 const getCoursesFromDB = async (payload:
-    { page: string, limit: string, search: string }
+    { page: string, limit: string, search: string, status: string }
 ) => {
 
     // logic here
-    const { page, limit, search } = payload;
+    const { page, limit, search,status } = payload;
 
     const pageNum = Number(page) || 1;
     const limitPage = Number(limit) || 10;
@@ -27,9 +27,12 @@ const getCoursesFromDB = async (payload:
         query.status = "approved";
         const data = await Course.find(query).populate("instructor", "username").skip(skip).limit(limitPage);
         return { totalData, data };
-    } else {
-        query.status = "approved";
+    } else if(status){
+        query.status = status;
         const data = await Course.find(query).populate("instructor", "username").skip(skip).limit(limitPage);
+        return { totalData, data };
+    }else{
+        const data = await Course.find({}).populate("instructor", "username").skip(skip).limit(limitPage);
         return { totalData, data };
     }
 }

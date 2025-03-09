@@ -6,13 +6,10 @@ import SingleCourseCard from './SignleCourseCard';
 const SingleCourse: React.FC = () => {
     const {slug} = useParams();
     const {data:SingleCourseData, isLoading} = useGetCourseBySlugQuery(slug);
-    
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+  
   return (
     <div>
-      <SingleCourseCard course={SingleCourseData?.data} />
+      <SingleCourseCard isLoading={isLoading} course={SingleCourseData?.data} />
     </div>
   )
 }
