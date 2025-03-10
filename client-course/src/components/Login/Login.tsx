@@ -50,6 +50,7 @@ const Login = () => {
       };
       if (result.success) {
         toast.success(`${result.message}`);
+        console.log(result.data);
         await dispatch(setToken(result.data))
         navigate(state ? state : "/")
       }else{

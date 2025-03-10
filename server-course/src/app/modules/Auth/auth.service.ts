@@ -24,7 +24,7 @@ const registrationUserIntoDB = async (payload: IUser) => {
 
   // hash password
   const hashedPassword = await bcrypt.hash(password, 12);
-  const result = await User.create({
+  await User.create({
     username,
     email,
     password: hashedPassword,
@@ -34,7 +34,7 @@ const registrationUserIntoDB = async (payload: IUser) => {
     needsPasswordChange: true, // set to true for first login
   });
 
-  return result;
+  return
 
 }
 const loginUserIntoDB = async (payload: IUser) => {

@@ -11,13 +11,13 @@ const baseQuery = fetchBaseQuery(
     baseUrl: "http://localhost:5000/api",
     prepareHeaders(headers, { getState }) {
       const state = getState() as RootState;
-      const token: string = state.auth.token;
-      console.log(token);
+      const token: string = state?.auth?.token;
+      // console.log(token);
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`)
+        headers.set("authorization", `Bearer ${token}`)
       }
+      return headers;
 
-      return headers
     },
     credentials: "include",
   });
@@ -25,8 +25,8 @@ const baseQuery = fetchBaseQuery(
 const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
   // Lock the mutex to prevent concurrent refresh requests
   let result = await baseQuery(args, api, extraOptions);
-  console.log(result);
-  if (result.error) {
+  // console.log(result);
+  if (result.error && result?.error?.status === 500) {
     // If token expired, try to generate refresh token
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
@@ -40,11 +40,12 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
         );
 
         if (refreshResult?.data) {
-          const newToken = refreshResult.data as {data: string, success: boolean, message: string}
-          console.log(newToken.data);
+          const newToken = refreshResult?.data as { data: string, success: boolean, message: string }
+          console.log(newToken)
           // Update the token in the Redux store
-          api.dispatch(setToken({ accessToken: newToken?.data }));
+          // return api.dispatch(setToken({ accessToken: newToken?.data, needsPasswordChange: true }));
         } else {
+          console.log("hello logout!")
           api.dispatch(logout());
         }
 
@@ -60,7 +61,7 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 
   } else {
     await mutex.waitForUnlock();
-    // result = await baseQuery(args, api, extraOptions);
+    result = await baseQuery(args, api, extraOptions);
   }
 
   return result;

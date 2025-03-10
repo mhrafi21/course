@@ -39,7 +39,7 @@ const Course: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {isLoading &&
           Array.from({ length: limit }, (_, index) => index).map((_, index) => (
-            <Card>
+            <Card key={index}>
               <div className="flex items-center space-x-4 min-h-[135px]">
                 <div className="space-y-2 w-full px-4">
                   <Skeleton className="h-4 w-[250px]" />

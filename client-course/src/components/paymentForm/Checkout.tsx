@@ -17,13 +17,13 @@ import { useAuth } from "@/hooks/useAuth";
 
 const CheckoutPage = () => {
   const [createPayment] = useCreatePaymentMutation(undefined);
-  const {user} = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
   const [searchParams] = useSearchParams();
   const uId = searchParams.get("uId");
-  const cId = searchParams.get("uId");
+  const cId = searchParams.get("cId");
   const {
     register,
     handleSubmit,
@@ -44,13 +44,23 @@ const CheckoutPage = () => {
   const onSubmit = async (data) => {
     if (!stripe || !elements) return;
     try {
-      console.log(data, user);
-      const result = await createPayment({ userId: uId, courseId: cId });
-      console.log(result);
+      const {data} = await createPayment({ userId: uId, courseId: cId });
+      // console.log(data.data.clientSecret)
+      const resStripe = await stripe.confirmCardPayment(data?.data?.clientSecret, {
+        payment_method: { card: elements.getElement(CardElement)! },
+  
+      });
 
-      toast.success("Order placed successfully!");
-      navigate("/order-confirmation");
+      if (resStripe.error) {
+        toast.error(resStripe.error.message);
+        return;
+      } else {
+        toast.success("Order placed successfully!");
+        navigate(`/order-confirmation`);
+        return;
+      }
     } catch (error: any) {
+      console.log(error);
       toast.error("Failed to place order", error);
     }
   };
@@ -80,7 +90,6 @@ const CheckoutPage = () => {
                 id="email"
                 label="Email Address"
                 type="email"
-
                 register={register}
                 errors={errors}
               />
