@@ -4,7 +4,6 @@ import { useSearchParams } from "react-router";
 import { ICourse } from "@/interface";
 import CourseCard from "./CourseCard";
 import CustomPagination from "@/components/CustomPagination/CustomPagination";
-import { CardSkeleton } from "@/components/Skeleton/Skeleton";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 

@@ -1,80 +1,77 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+import { Mutex } from "async-mutex";
 import { RootState } from "./store";
-import { Mutex } from "async-mutex"
 import { logout, setToken } from "./features/Auth/authSlice";
-// create refresh token functionality 
-// Create a mutex to prevent multiple refresh requests at the same time 
-const mutex = new Mutex;
 
-const baseQuery = fetchBaseQuery(
-  {
-    baseUrl: "http://localhost:5000/api",
-    prepareHeaders(headers, { getState }) {
-      const state = getState() as RootState;
-      const token: string = state?.auth?.token;
-      // console.log(token);
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`)
-      }
-      return headers;
+// Create a mutex to prevent multiple simultaneous refresh requests
+const mutex = new Mutex();
 
-    },
-    credentials: "include",
-  });
+const baseQuery = fetchBaseQuery({
+  baseUrl: "http://localhost:5000/api",
+  prepareHeaders(headers, { getState }) {
+    const state = getState() as RootState;
+    const token = state?.auth?.token;
+    if (token) {
+      headers.set("authorization", `Bearer ${token}`);
+    }
+    return headers;
+  },
+  credentials: "include",
+});
 
-const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
-  // Lock the mutex to prevent concurrent refresh requests
+const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  // console.log(result);
+
   if (result.error && result?.error?.status === 500) {
-    // If token expired, try to generate refresh token
+    // If token is expired, try to refresh it
     if (!mutex.isLocked()) {
-      const release = await mutex.acquire();
+      const release = await mutex.acquire(); // Acquire lock
+
       try {
-        const refreshResult = await baseQuery({
-          url: "/auth/refresh-token",
-          method: "POST",
-        },
+        const refreshResult = await baseQuery(
+          {
+            url: "/auth/refresh-token",
+            method: "POST",
+          },
           api,
           extraOptions
         );
 
         if (refreshResult?.data) {
-          const newToken = refreshResult?.data as { data: string, success: boolean, message: string }
-          console.log(newToken)
-          // Update the token in the Redux store
-          // return api.dispatch(setToken({ accessToken: newToken?.data, needsPasswordChange: true }));
+          const newToken = refreshResult?.data as { data: string; success: boolean; message: string };
+
+          if (newToken?.success) {
+            // Update Redux state with new token
+            api.dispatch(setToken({ accessToken: newToken.data, needsPasswordChange: false }));
+
+            // Retry the original request with new token
+            result = await baseQuery(args, api, extraOptions);
+          } else {
+            api.dispatch(logout());
+            window.location.href = "/login";
+          }
         } else {
-          console.log("hello logout!")
           api.dispatch(logout());
+          window.location.href = "/login";
         }
-
-        // return the original request with new token ;
-
-        result = await baseQuery(args, api, extraOptions)
-
-
       } finally {
-        release();
+        release(); // Release lock
       }
-    };
-
-  } else {
-    await mutex.waitForUnlock();
-    result = await baseQuery(args, api, extraOptions);
+    } else {
+      // If another request is refreshing, wait for it to complete before retrying
+      await mutex.waitForUnlock();
+      result = await baseQuery(args, api, extraOptions);
+    }
   }
 
   return result;
-}
-
+};
 
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["courses", "Carts", "users"],
+  tagTypes: ["courses", "users"],
   endpoints: (builder) => ({
-
-    // signup
     signup: builder.mutation({
       query: (credentials) => ({
         url: "/auth/register",
@@ -83,7 +80,6 @@ export const baseApi = createApi({
       }),
     }),
 
-    //login
     login: builder.mutation({
       query: (credentials) => ({
         url: "/auth/login",
@@ -92,7 +88,6 @@ export const baseApi = createApi({
       }),
     }),
 
-    // forgot password 
     forgotPassword: builder.mutation({
       query: (credentials) => ({
         url: "/auth/change-password",
@@ -101,45 +96,40 @@ export const baseApi = createApi({
       }),
     }),
 
-    // reset password
-
     resetPassword: builder.mutation({
       query: (credentials) => ({
-        url: '/auth/reset-password',
+        url: "/auth/reset-password",
         method: "POST",
-        body: credentials
-      })
+        body: credentials,
+      }),
     }),
 
-    // refresh token generate
     generateRefreshToken: builder.mutation({
       query: () => ({
         url: "/auth/refresh-token",
         method: "POST",
       }),
+      invalidatesTags: ["users"],
     }),
 
     createProduct: builder.mutation({
-      query: (product) => {
-        return {
-          url: "/courses/create-course",
-          method: "POST",
-          body: product,
-        };
-      },
+      query: (product) => ({
+        url: "/courses/create-course",
+        method: "POST",
+        body: product,
+      }),
       invalidatesTags: [{ type: "courses", id: "LIST" }],
     }),
 
     getCourses: builder.query({
-      query: (params) => {
-        return {
-          url: "/courses",
-          method: "GET",
-          params,
-        };
-      },
+      query: (params) => ({
+        url: "/courses",
+        method: "GET",
+        params,
+      }),
       providesTags: [{ type: "courses", id: "LIST" }],
     }),
+
     getCourseBySlug: builder.query({
       query: (slug) => ({
         url: `/courses/${slug}`,
@@ -148,24 +138,14 @@ export const baseApi = createApi({
       providesTags: (id) => [{ type: "courses", id }],
     }),
 
-    // payment
-
     createPayment: builder.mutation({
-      query: (paymentInfo) => {
-        return {
-          url: "/payment/create-payment",
-          method: "POST",
-          body: paymentInfo,
-        };
-      },
+      query: (paymentInfo) => ({
+        url: "/payment/create-payment",
+        method: "POST",
+        body: paymentInfo,
+      }),
       invalidatesTags: [{ type: "courses", id: "LIST" }],
     }),
-
-
-
-
-
-
 
     updateProductById: builder.mutation({
       query: ({ productId, ...product }) => ({
@@ -177,15 +157,12 @@ export const baseApi = createApi({
     }),
 
     deleteSingleProduct: builder.mutation({
-      query: (id) => {
-        return {
-          url: `/courses/${id}`,
-          method: "DELETE",
-        };
-      },
+      query: (id) => ({
+        url: `/courses/${id}`,
+        method: "DELETE",
+      }),
       invalidatesTags: ({ _id }) => [{ type: "courses", id: _id }],
     }),
-
   }),
 });
 

@@ -19,6 +19,8 @@ import ForgotPassword from "@/pages/frontendPages/ForgotPassword/ForgotPassword"
 import ResetPassword from "@/pages/frontendPages/ResetPassword/ResetPassword";
 import CheckoutPage from "@/components/paymentForm/Checkout";
 
+
+
 const router = createBrowserRouter([
   {
     path: "/",

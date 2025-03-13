@@ -8,7 +8,7 @@ const stripe = new Stripe(config.stripe_secret_key as string, { apiVersion: "202
 
 const createPaymentIntoDB = async (payload: { userId: string, courseId: string }) => {
     const { userId, courseId } = payload;
-    console.log(userId, courseId);
+
 
     // check if course exists 
     const course = await Course.findById(courseId);
@@ -27,9 +27,6 @@ const createPaymentIntoDB = async (payload: { userId: string, courseId: string }
         },
         description: `Payment for course ${course.title}`,
     })
-
-
-
 
     return { clientSecret: paymentIntent.client_secret }
 

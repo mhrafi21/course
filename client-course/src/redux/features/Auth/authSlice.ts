@@ -17,7 +17,6 @@ const authReducer = createSlice( {
             state.token = accessToken;
         },
         logout: (state) =>{
-            console.log(state)
             state.token = ""
         }
     }

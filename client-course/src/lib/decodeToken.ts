@@ -1,11 +1,19 @@
 import { TSToken } from '@/interface';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 export const decodeToken = (token: string) => {
-    if (token) {
-        const decoded = jwtDecode(token) ;
-        if (decoded) {
-            return decoded as TSToken;
-        }
+    if (!token) {
+        console.error("Token is invalid")
+    } else {
+        return null
     }
-    return null;
+
+    try {
+        if (token) {
+            return jwtDecode(token) as TSToken;
+        }
+    } catch (error) {
+        console.log("Failed to decode the token", error);
+        return null;
+    }
+
 }

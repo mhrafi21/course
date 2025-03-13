@@ -17,7 +17,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 const CheckoutPage = () => {
   const [createPayment] = useCreatePaymentMutation(undefined);
-  const { user } = useAuth();
+  const {  user } = useAuth();
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
@@ -41,14 +41,15 @@ const CheckoutPage = () => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (info) => {
+
     if (!stripe || !elements) return;
+    console.log(info);
     try {
       const {data} = await createPayment({ userId: uId, courseId: cId });
-      // console.log(data.data.clientSecret)
+      console.log(data)
       const resStripe = await stripe.confirmCardPayment(data?.data?.clientSecret, {
         payment_method: { card: elements.getElement(CardElement)! },
-  
       });
 
       if (resStripe.error) {

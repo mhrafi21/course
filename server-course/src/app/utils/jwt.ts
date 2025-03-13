@@ -15,7 +15,7 @@ export const generateRefreshToken = (userInfo: TTokens): string => {
 export const verifyToken = (token: string, secret: string): JwtPayload => {
     const verifyTk = jwt.verify(token, secret);
     if (!verifyTk) {
-        throw new AppError(httpStatus.NOT_ACCEPTABLE, 'Invalid token');
+        throw new AppError(httpStatus.FORBIDDEN, 'Invalid token');
     }
     return verifyTk as JwtPayload;
 

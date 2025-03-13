@@ -19,11 +19,8 @@ const auth = (...requiredRoles: TURole[]) => {
     const token = authorization.split(' ')[1];
    
 
-    if(!config.jwt_access_secret){
-      throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'AccessToken secret, Internal Server Error');
-    }
-
-    const decoded = jwt.verify(token, config.jwt_access_secret) as JwtPayload;
+    
+    const decoded = jwt.verify(token, config.jwt_access_secret!) as JwtPayload;
     if (!requiredRoles.includes(decoded.role)) {
       throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized!');
     }
