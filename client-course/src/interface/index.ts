@@ -12,7 +12,7 @@ export interface ICourse  {
     lesson: number;
     slug: string;
     instructor?: string;
-    studentEnrolled?: string;
+    studentEnrolled?: string[];
     status: "pending" | "approved"
 }
 export interface FormData {

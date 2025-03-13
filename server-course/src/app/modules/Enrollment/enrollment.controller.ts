@@ -16,8 +16,7 @@ const enrollMentUser = catchAsync(async(req, res) => {
 })
 
 const getUserEnrollments = catchAsync(async(req,res) => {
-
-    const result = await enrollmentsServices.getUserEnrollmentsIntoDB(req.params as {userId: string});
+    const result = await enrollmentsServices.getUserEnrollmentsIntoDB(req.user.id as string);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,

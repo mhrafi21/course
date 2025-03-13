@@ -147,6 +147,22 @@ export const baseApi = createApi({
       invalidatesTags: [{ type: "courses", id: "LIST" }],
     }),
 
+    // create enroll
+
+    createEnroll: builder.mutation({
+      query: (enrollInfo) => ({
+        url: "/enroll/create-enroll",
+        method: "POST",
+        body: enrollInfo,
+      })
+    }),
+
+    getEnrollCourse: builder.query({
+      query: () => ({
+        url: "/enroll",
+        method: "GET",
+      })
+    }),
     updateProductById: builder.mutation({
       query: ({ productId, ...product }) => ({
         url: `/courses/${productId}`,
@@ -176,6 +192,12 @@ export const {
   useGetCoursesQuery,
   useGetCourseBySlugQuery,
   useCreatePaymentMutation,
+  useCreateEnrollMutation,
+  useGetEnrollCourseQuery,
+  // useGetEnrollByStudentIdQuery,
+  // useGetEnrollByCourseIdQuery,
+  // useGetEnrollByInstructorIdQuery,
+  // useGetCourseByInstructorIdQuery,
   useUpdateProductByIdMutation,
   useDeleteSingleProductMutation,
 } = baseApi;

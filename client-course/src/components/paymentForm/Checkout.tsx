@@ -12,11 +12,12 @@ import { useNavigate, useSearchParams } from "react-router";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useCreatePaymentMutation } from "@/redux/baseApi";
+import { useCreateEnrollMutation, useCreatePaymentMutation } from "@/redux/baseApi";
 import { useAuth } from "@/hooks/useAuth";
 
 const CheckoutPage = () => {
   const [createPayment] = useCreatePaymentMutation(undefined);
+  const [createEnrollment] = useCreateEnrollMutation(undefined);
   const {  user } = useAuth();
   const navigate = useNavigate();
   const stripe = useStripe();
@@ -47,22 +48,33 @@ const CheckoutPage = () => {
     console.log(info);
     try {
       const {data} = await createPayment({ userId: uId, courseId: cId });
-      console.log(data)
+      // console.log(data)
       const resStripe = await stripe.confirmCardPayment(data?.data?.clientSecret, {
         payment_method: { card: elements.getElement(CardElement)! },
       });
+
+      // enrolment api call
+    
+
 
       if (resStripe.error) {
         toast.error(resStripe.error.message);
         return;
       } else {
-        toast.success("Order placed successfully!");
+
+        const enrollRes = await createEnrollment({ userId: user?.id, courseId: cId, paymentId: resStripe?.paymentIntent?.id }).unwrap();
+        if (!enrollRes.success) {
+          toast.error("Failed to enroll", enrollRes);
+          return;
+        }
+
+        toast.success("Enrollment placed successfully!");
         navigate(`/order-confirmation`);
         return;
       }
     } catch (error: any) {
-      console.log(error);
-      toast.error("Failed to place order", error);
+ console.error(error.data)
+      toast.error(error?.data?.message || "Already Enrolled");
     }
   };
 

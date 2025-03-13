@@ -5,7 +5,7 @@ const courseSchema = new Schema<ICourse>({
     title: {
         type: String,
         required: [true, 'Title is required'],
-        unique: true 
+        unique: true
         
     },
     category: {

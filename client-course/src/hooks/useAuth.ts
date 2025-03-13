@@ -13,6 +13,4 @@ export const useAuth = () => {
         console.error("Error in decoding token", error)
         return { token: "", isAuthenticated: !!token, user: null }
     }
-
-
 }

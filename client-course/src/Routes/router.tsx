@@ -19,8 +19,6 @@ import ForgotPassword from "@/pages/frontendPages/ForgotPassword/ForgotPassword"
 import ResetPassword from "@/pages/frontendPages/ResetPassword/ResetPassword";
 import CheckoutPage from "@/components/paymentForm/Checkout";
 
-
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -36,7 +34,7 @@ const router = createBrowserRouter([
         path: "/courses/",
         Component: () => <Course />,
       },
-      
+
       {
         path: "/course/:slug/",
         Component: () => <SingleCourse />,
@@ -47,7 +45,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/checkout",
-        Component: () => <CheckoutPage/>
+        Component: () => (
+          <PrivateRoute>
+            <CheckoutPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/sign-up/",
