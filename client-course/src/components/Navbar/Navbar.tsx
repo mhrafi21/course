@@ -14,6 +14,8 @@ import UserDropdownMenu from "@/components/UserDropDownMenu/UserDropDownMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { ModeToggle } from "../ThemeProvider/ModeToggle";
 import { Card } from "../ui/card";
+import { InputField } from "../form/InputField";
+import Search from "../Search/Search";
 
 const Navbar: React.FunctionComponent = () => {
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
@@ -28,8 +30,10 @@ const Navbar: React.FunctionComponent = () => {
             CourseHub
           </NavLink>
 
+          <Search />
+
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-6">
+          <div className="hidden lg:flex items-center space-x-2">
             <NavLink
               to="/"
               className={({ isActive }) =>

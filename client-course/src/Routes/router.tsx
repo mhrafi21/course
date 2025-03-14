@@ -18,6 +18,7 @@ import PrivateRoute from "@/components/PrivateRoute/PrivateRoute";
 import ForgotPassword from "@/pages/frontendPages/ForgotPassword/ForgotPassword";
 import ResetPassword from "@/pages/frontendPages/ResetPassword/ResetPassword";
 import CheckoutPage from "@/components/paymentForm/Checkout";
+import SearchingCourse from "@/pages/frontendPages/SearchingCourse/SearchingCourse";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/course/:slug/",
         Component: () => <SingleCourse />,
+      },
+      {
+        path: "/search", 
+        Component: () => <SearchingCourse />
       },
       {
         path: "/order-confirmation",

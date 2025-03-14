@@ -1,17 +1,41 @@
-import React from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { useForm } from "react-hook-form";
+import { InputField } from "../form/InputField";
+import { useNavigate } from "react-router";
 
-const Search: React.FC = () => {
+const Search = () => {
+  // Use the useLoginMutation hook to get the login mutation
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      search: "",
+    },
+  });
+
+  const onSubmit = async (data) => {
+    // Navigate to search results page
+    navigate(`/search?q=${data.search.trim().toLowerCase().split(" ").join("+")}`);
+  };
+
   return (
     <div>
-      {/* Search & Auth Buttons */}
-      <div className="hidden lg:flex items-center space-x-4">
-        <Input placeholder="Search courses..." className="w-48" />
-        <Button variant="outline">Login</Button>
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-          Sign Up
-        </Button>
+      <div>
+        <div>
+          <div>
+            <div className="w-full">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <InputField
+                  id="search"
+                  label=""
+                  type="text"
+                  register={register}
+                  errors={""}
+                  placeholder={"Search for products, brands, or categories"}
+             
+                />
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

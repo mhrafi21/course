@@ -13,9 +13,10 @@ interface InputFieldProps {
   register?: any;
   errors?: any;
   watch?: any;
+  placeholder?: any;
 }
 
-export const InputField: React.FC<InputFieldProps> = ({ id, label, type = "text", defaultValue, register, errors, watch }) => {
+export const InputField: React.FC<InputFieldProps> = ({ id, label, type = "text", defaultValue, register, errors, watch, placeholder }) => {
     const [showPassword, setShowPassword] = useState(false);
     return (
       <div>
@@ -27,7 +28,7 @@ export const InputField: React.FC<InputFieldProps> = ({ id, label, type = "text"
             id={id}
             type={type === "password" && showPassword ? "text" : type}
             defaultValue={defaultValue}
-            placeholder={`Enter your ${label.toLowerCase()}`}
+            placeholder={`Enter your ${placeholder?.toLowerCase()}`}
             className="mt-2 h-10 pr-10 shadow-sm"
             {...register(id, {
               required: `${label} is required`,

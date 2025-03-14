@@ -25,16 +25,14 @@ const getCoursesFromDB = async (payload:
     if (search) {
         query.title = { $regex: search, $options: "i" };
         query.status = "approved";
-        const data = await Course.find(query).populate("instructor", "username").skip(skip).limit(limitPage);
+        const data = await Course.find(query).populate("instructor", "username").skip(skip).limit(limitPage).exec();
         return { totalData, data };
     } else {
         const data = await Course.find(query).populate("instructor", "username"
-        ).skip(skip).limit(limitPage);
+        ).skip(skip).limit(limitPage).exec();
         return { totalData, data };
     }
 }
-
-
 
 const getCourseByInstructorIdFromDB = async (instructorId: string) => {
     // logic here
