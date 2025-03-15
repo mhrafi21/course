@@ -14,23 +14,29 @@ import UserDropdownMenu from "@/components/UserDropDownMenu/UserDropDownMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { ModeToggle } from "../ThemeProvider/ModeToggle";
 import { Card } from "../ui/card";
-
+import Search from "../Search/Search";
 
 const Navbar: React.FunctionComponent = () => {
   const { isAuthenticated, user } = useAuth();
 
   return (
     <Card className="rounded-none shadow-md border-b-2 border-none fixed top-0 left-0 w-full z-50 bg-white dark:bg-gray-900 transition-colors">
+      
       <nav className="">
-        <div className="container mx-auto flex justify-between items-center h-20">
+        <div className="container mx-auto flex  items-center h-20">
           {/* Logo */}
-          <NavLink to="/" className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+          <NavLink to="/" className="text-3xl font-bold text-blue-600 dark:text-blue-400">
             CourseHub
           </NavLink>
 
 
+          <div className="w-full px-5">
+         <Search />
+         </div>
+         
+
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-2">
+          <div className="hidden lg:flex ml-auto items-center space-x-2">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -69,38 +75,6 @@ const Navbar: React.FunctionComponent = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            <NavLink
-              to="/pricing"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-gray-400 dark:bg-gray-600 rounded-lg p-2 text-white"
-                  : "text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 p-2"
-              }
-            >
-              Pricing
-            </NavLink>
-            <NavLink
-              to="/about"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-gray-400 dark:bg-gray-600 rounded-lg p-2 text-white"
-                  : "text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 p-2"
-              }
-            >
-              About
-            </NavLink>
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-gray-400 dark:bg-gray-600 rounded-lg p-2 text-white"
-                  : "text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 p-2"
-              }
-            >
-              Contact
-            </NavLink>
-
             {/* Shopping Cart */}
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center">

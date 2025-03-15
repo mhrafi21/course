@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { InputField } from "../form/InputField";
 import { useNavigate } from "react-router";
+import { Input } from "../ui/input";
 
 const Search = () => {
   // Use the useLoginMutation hook to get the login mutation
@@ -23,13 +24,12 @@ const Search = () => {
           <div>
             <div className="w-full">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <InputField
+                <Input
+                className="rounded-full h-10"
                   id="search"
-                  label=""
                   type="text"
-                  register={register}
-                  errors={""}
-                  placeholder={"Search for products, brands, or categories"}
+                  {...register("search")}
+                  placeholder="Search for courses..."
                   
                 />
               </form>
