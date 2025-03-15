@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetCoursesQuery } from "@/redux/baseApi";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -20,11 +20,13 @@ import {
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
+import CustomPagination from "@/components/CustomPagination/CustomPagination";
+import { Label } from "@/components/ui/label";
 
 export default function CoursePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [openFilters, setOpenFilters] = useState(false);
-
+  const [showAllFilters, setShowAllFilters] = useState(false);
   const query = searchParams.get("q") || "";
   const sortBy = searchParams.get("sort") || "";
   const category = searchParams.get("category") || "";
@@ -32,12 +34,33 @@ export default function CoursePage() {
   const difficulty = searchParams.get("difficulty") || "";
   const rating = searchParams.get("rating") || "";
 
+  // Get values from URL, defaulting to page 1 & limit 10
+  const page = Number(searchParams.get("page")) || 1;
+  const limit = Number(searchParams.get("limit")) || 10;
+
+  useEffect(() => {
+    // Ensure URL stays updated with current page & limit
+    setSearchParams({
+      q: query, 
+      page: String(page),
+      limit: String(limit),
+      category: category,
+      price: priceRange,
+      difficulty: difficulty,
+      rating: rating,
+      sort: sortBy,
+    });
+  }, [page,query, limit, category, priceRange, difficulty, rating, sortBy, setSearchParams]);
+  
+
   const {
     data: Courses,
     isLoading,
     isFetching,
     isUninitialized,
   } = useGetCoursesQuery({
+    limit,
+    page,
     search: query,
     sort: sortBy,
     category,
@@ -94,38 +117,51 @@ export default function CoursePage() {
     },
   ];
 
+  const visibleFilters = showAllFilters ? filterOptions : filterOptions.slice(0, 3);
+
   const selectedFilters = filterOptions.filter(
     (filter) => filter.selected !== ""
   );
-
   const FilterComponent = () => (
-    <Accordion type="multiple" className="w-full">
-      {filterOptions.map((filter) => (
-        <AccordionItem key={filter.key} value={filter.key}>
-          <AccordionTrigger>{filter.title}</AccordionTrigger>
-          <AccordionContent>
-            <div className="ml-4 space-y-2">
-              {filter.options.map((value) => (
-                <label key={value} className="flex items-center space-x-2">
-                  <Checkbox
-                    checked={filter.selected === value}
-                    onCheckedChange={() => updateFilter(filter.key, value)}
-                  />
-                  <span>{value.replace("-", " ")}</span>
-                </label>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      ))}
-    </Accordion>
-  );
+    <Accordion type="multiple" defaultValue={["category", "sort","price"]} className="w-full">
+    {visibleFilters.map((filter) => (
+      <AccordionItem key={filter.key} value={filter.key}>
+        <AccordionTrigger className="text-lg font-semibold">
+          {filter.title}
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="space-y-2">
+            {filter.options.map((value) => (
+              <Label key={value} className="flex items-center space-x-2">
+                <Checkbox
+                  checked={filter.selected === value}
+                  onCheckedChange={() => updateFilter(filter.key, value)}
+                />
+                <span>{value.replace("-", " ")}</span>
+              </Label>
+            ))}
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    ))}
 
+    {/* See More Button */}
+    {!showAllFilters && filterOptions.length > 3 && (
+      <Button
+        variant="outline"
+        className="mt-2 w-full"
+        onClick={() => setShowAllFilters(true)}
+      >
+        See More
+      </Button>
+    )}
+  </Accordion>
+  );
+  
   return (
     <div className="container">
       <div className="">
         {/* Course List */}
-
         <CardTitle className="text-3xl">
           {Courses?.data?.data?.length} results for {`"${query}"`}
         </CardTitle>
@@ -151,7 +187,8 @@ export default function CoursePage() {
           )}
         </div>
       </div>
-      <div className="grid grid-cols-1 mt-6 lg:grid-cols-6 gap-5">
+
+      <div className="grid grid-cols-1 mt-4 lg:grid-cols-4 gap-5">
         {/* Mobile Sidebar */}
         <div className="lg:hidden col-span-1">
           <Sheet open={openFilters} onOpenChange={setOpenFilters}>
@@ -160,24 +197,24 @@ export default function CoursePage() {
                 Show Filters
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72">
+            <SheetContent side="right" className="w-72 bg-white dark:black text-gray-900 dark:text-gray-100">
               <SheetHeader>
                 <SheetTitle>Filters</SheetTitle>
               </SheetHeader>
-              <div className="mt-4">{FilterComponent()}</div>
+              <div className="mt-2">{FilterComponent()}</div>
             </SheetContent>
           </Sheet>
         </div>
 
         {/* Desktop Sidebar */}
-        <aside className="hidden  lg:block lg:col-span-2">
-          <h3 className="text-xl font-semibold mb-4">Filters</h3>
+        <aside className="hidden lg:block lg:col-span-1">
+          <CardTitle className="text-2xl">Filter</CardTitle>
           {FilterComponent()}
         </aside>
 
         {/* Main Content */}
-        <div className="lg:col-span-4  flex flex-col space-y-6">
-          <div className="grid grid-cols-1  gap-6">
+        <div className="lg:col-span-3 flex flex-col space-y-6">
+          <div className="grid grid-cols-1 gap-6">
             {isLoading || isFetching || isUninitialized ? (
               Array.from({ length: 6 }).map((_, index) => (
                 <Card key={index} className="shadow-md rounded-lg">
@@ -190,9 +227,9 @@ export default function CoursePage() {
               Courses?.data?.data?.map((course) => (
                 <Card key={course._id} className="flex gap-2 shadow-none">
                   <img
-                    src={course.image}
+                    src={course.thumbnail}
                     alt={course.title}
-                    className="w-full h-40 object-cover rounded-t-lg"
+                    className="w-48 h-40 object-cover rounded-l-lg"
                   />
                   <CardContent className="p-4">
                     <h3 className="text-lg font-semibold">{course.title}</h3>
@@ -208,8 +245,20 @@ export default function CoursePage() {
               </p>
             )}
           </div>
+          
+      <div>
+        {/* Reusable Pagination Component */}
+        <CustomPagination
+          currentPage={page}
+          totalPages={Math.ceil(Courses?.data?.totalData / limit)}
+          onPageChange={(newPage) => {
+            setSearchParams({ page: String(newPage), limit: String(limit) });
+          }}
+        />
+      </div>
         </div>
       </div>
+
     </div>
   );
 }

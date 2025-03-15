@@ -14,7 +14,7 @@ import UserDropdownMenu from "@/components/UserDropDownMenu/UserDropDownMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { ModeToggle } from "../ThemeProvider/ModeToggle";
 import { Card } from "../ui/card";
-import Search from "../Search/Search";
+
 
 const Navbar: React.FunctionComponent = () => {
   const { isAuthenticated, user } = useAuth();
@@ -28,7 +28,6 @@ const Navbar: React.FunctionComponent = () => {
             CourseHub
           </NavLink>
 
-          <Search />
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-2">

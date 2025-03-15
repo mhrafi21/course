@@ -30,7 +30,7 @@ const Search = () => {
                   register={register}
                   errors={""}
                   placeholder={"Search for products, brands, or categories"}
-             
+                  
                 />
               </form>
             </div>
