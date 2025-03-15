@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router";
 import { Menu, ChevronDown, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
-import { motion } from "framer-motion";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import UserDropdownMenu from "@/components/UserDropDownMenu/UserDropDownMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { ModeToggle } from "../ThemeProvider/ModeToggle";
@@ -17,25 +17,21 @@ import { Card } from "../ui/card";
 import Search from "../Search/Search";
 
 const Navbar: React.FunctionComponent = () => {
-  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
   const { isAuthenticated, user } = useAuth();
 
   return (
     <Card className="rounded-none shadow-md border-b-2 border-none fixed top-0 left-0 w-full z-50 bg-white dark:bg-gray-900 transition-colors">
-      <nav className="py-4">
-        <div className="container mx-auto flex justify-between items-center h-20 px-4 lg:px-8">
+      <nav className="">
+        <div className="container mx-auto flex justify-between items-center h-20">
           {/* Logo */}
           <NavLink to="/" className="text-2xl font-bold text-blue-600 dark:text-blue-400">
             CourseHub
           </NavLink>
 
-          {/* Search */}
-          <div className="hidden lg:block w-72">
-            <Search />
-          </div>
+          <Search />
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-2">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -46,7 +42,6 @@ const Navbar: React.FunctionComponent = () => {
             >
               Home
             </NavLink>
-
             <NavLink
               to="/courses"
               className={({ isActive }) =>
@@ -170,30 +165,20 @@ const Navbar: React.FunctionComponent = () => {
                   Home
                 </NavLink>
 
-                {/* Mobile Courses Dropdown */}
-                <button
-                  className="w-full flex justify-between items-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none"
-                  onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
-                >
-                  Courses
-                  <ChevronDown size={16} className={`transition-transform ${mobileDropdownOpen ? "rotate-180" : ""}`} />
-                </button>
-
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{
-                    height: mobileDropdownOpen ? "auto" : 0,
-                    opacity: mobileDropdownOpen ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="overflow-hidden"
-                >
-                  <div className="flex flex-col space-y-2 pl-4">
-                    <NavLink to="/courses/web-development">Web Development</NavLink>
-                    <NavLink to="/courses/data-science">Data Science</NavLink>
-                    <NavLink to="/courses/design">UI/UX Design</NavLink>
-                  </div>
-                </motion.div>
+                {/* Mobile Courses Accordion */}
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="courses">
+                    <AccordionTrigger className="w-full flex justify-between items-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                      Courses
+                      <ChevronDown size={16} className="transition-transform" />
+                    </AccordionTrigger>
+                    <AccordionContent className="flex flex-col space-y-2 pl-4">
+                      <NavLink to="/courses/web-development">Web Development</NavLink>
+                      <NavLink to="/courses/data-science">Data Science</NavLink>
+                      <NavLink to="/courses/design">UI/UX Design</NavLink>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
 
                 <Button variant="outline" className="w-full">
                   Login
