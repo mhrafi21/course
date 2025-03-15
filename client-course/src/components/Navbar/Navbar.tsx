@@ -14,7 +14,6 @@ import UserDropdownMenu from "@/components/UserDropDownMenu/UserDropDownMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { ModeToggle } from "../ThemeProvider/ModeToggle";
 import { Card } from "../ui/card";
-import { InputField } from "../form/InputField";
 import Search from "../Search/Search";
 
 const Navbar: React.FunctionComponent = () => {
@@ -23,17 +22,20 @@ const Navbar: React.FunctionComponent = () => {
 
   return (
     <Card className="rounded-none shadow-md border-b-2 border-none fixed top-0 left-0 w-full z-50 bg-white dark:bg-gray-900 transition-colors">
-      <nav className="">
-        <div className="container mx-auto flex justify-between items-center h-20">
+      <nav className="py-4">
+        <div className="container mx-auto flex justify-between items-center h-20 px-4 lg:px-8">
           {/* Logo */}
           <NavLink to="/" className="text-2xl font-bold text-blue-600 dark:text-blue-400">
             CourseHub
           </NavLink>
 
-          <Search />
+          {/* Search */}
+          <div className="hidden lg:block w-72">
+            <Search />
+          </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-2">
+          <div className="hidden lg:flex items-center space-x-4">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -44,6 +46,7 @@ const Navbar: React.FunctionComponent = () => {
             >
               Home
             </NavLink>
+
             <NavLink
               to="/courses"
               className={({ isActive }) =>

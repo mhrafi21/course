@@ -14,10 +14,10 @@ const createCourse = catchAsync(async (req, res) => {
         discountPrice,
         lesson,
         language,
-     
+
     } = req.body;
     const slug = generateSlug(title as string);
-    const category_slug = generateSlug(category as string);
+    const category_slug = generateSlug(category as string)
     const result = await courseServices.createCourseIntoDB({ title, category, category_slug, description, price, slug, instructor: req.user.id, thumbnail, discountPrice, lesson, language } as ICourse);
     sendResponse(res, {
         statusCode: httpStatus.CREATED,
@@ -28,10 +28,10 @@ const createCourse = catchAsync(async (req, res) => {
 });
 
 const getCourses = catchAsync(async (req, res) => {
-    const { page, limit, search,status } = req.query;
+    const { page, limit, search, status, category } = req.query;
     const result = await courseServices.getCoursesFromDB(
-        { page, limit, search, status } as
-        { page: string, limit: string, search: string, status: string }
+        { page, limit, search, status, category } as
+        { page: string, limit: string, search: string, status: string, category: string, sortBy: string }
     );
 
     sendResponse(res, {
@@ -110,7 +110,8 @@ const approvedCourse = catchAsync(async (req, res) => {
 
 const updateCourseById = catchAsync(async (req, res) => {
     const { title, description } = req.body;
-    const result = await courseServices.updateCourseInDB(req.params.id, { title, description } as ICourse);
+    const result = await courseServices.updateCourseInDB(req.params.id,
+        { title, description } as ICourse);
 
     if (!result) {
         return sendResponse(res, {

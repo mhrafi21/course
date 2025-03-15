@@ -1,3 +1,6 @@
+import { buildQuery } from "../../builder/buildQuery";
+import { fetchCourses } from "../../builder/fetchCourses";
+import { getSortQuery } from "../../builder/getSortQuery";
 import { ICourse } from "./course.interface";
 import Course from "./course.model";
 
@@ -7,32 +10,24 @@ const createCourseIntoDB = async (payload: ICourse) => {
     return result;
 }
 
-
-const getCoursesFromDB = async (payload:
-    { page: string, limit: string, search: string}
-) => {
-
-    // logic here
-    const { page, limit, search } = payload;
-
-    const pageNum = Number(page) || 1;
-    const limitPage = Number(limit) || 10;
+const getCoursesFromDB = async (payload: {
+    page: string;
+    limit: string;
+    search?: string;
+    category?: string;
+    sortBy?: string;
+}) => {
+    const { page, limit, search, category, sortBy } = payload;
+    const pageNum = Math.max(Number(page) || 1, 1);
+    const limitPage = Math.max(Number(limit) || 10, 1);
     const skip = (pageNum - 1) * limitPage;
-    const totalData = await Course.find({}).countDocuments();
-
-    const query: { title?: { $regex: string, $options: string }, status?: string} = {status:"approved"};
-
-    if (search) {
-        query.title = { $regex: search, $options: "i" };
-        query.status = "approved";
-        const data = await Course.find(query).populate("instructor", "username").skip(skip).limit(limitPage).exec();
-        return { totalData, data };
-    } else {
-        const data = await Course.find(query).populate("instructor", "username"
-        ).skip(skip).limit(limitPage).exec();
-        return { totalData, data };
-    }
-}
+    // 🔹 Builds query dynamically based on search & category
+    const query = buildQuery({ search, category });
+    // Sorting logic
+    const sortQuery = getSortQuery(sortBy);
+    // Fetch data
+    return await fetchCourses(query, sortQuery, skip, limitPage);
+};
 
 const getCourseByInstructorIdFromDB = async (instructorId: string) => {
     // logic here
