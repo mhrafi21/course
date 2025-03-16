@@ -1,5 +1,4 @@
 
-import Search from "@/components/Search/Search";
 import { Button } from "@/components/ui/button";
 
 import { motion } from "framer-motion";
@@ -34,19 +33,6 @@ const HeroSection = () => {
         >
           Discover top-rated courses and start your learning journey with world-class instructors.
         </motion.p>
-
-        {/* Search Bar */}
-        <motion.div 
-          className="mt-6 flex items-center justify-center gap-2"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9 }}
-        >
-          <div className="relative w-full max-w-lg">
-           <Search />
-          
-          </div>
-        </motion.div>
 
         {/* CTA Buttons */}
         <motion.div 

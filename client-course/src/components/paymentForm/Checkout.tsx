@@ -42,7 +42,7 @@ const CheckoutPage = () => {
     },
   });
 
-  const onSubmit = async (info) => {
+  const onSubmit = async (info: any) => {
 
     if (!stripe || !elements) return;
     console.log(info);

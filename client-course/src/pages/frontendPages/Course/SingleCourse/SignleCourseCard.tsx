@@ -43,7 +43,7 @@ const CourseDetails = ({
     return <p>Loading enrolled course...</p>;
   }
 
-  const alreadyEnrolled = enrolledCourseData?.data?.some((c) =>
+  const alreadyEnrolled = enrolledCourseData?.data?.some((c: any) =>
     c?.courseId?.studentEnrolled.includes(course?._id)
   );
 

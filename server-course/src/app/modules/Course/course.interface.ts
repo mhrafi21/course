@@ -11,7 +11,7 @@ export interface ICourse extends Document {
     thumbnail: string;
     language: string;
     lesson: number;
-    slug: string;
+    slug?: string;
     instructor: mongoose.Types.ObjectId;
     studentEnrolled?: mongoose.Types.ObjectId[];
     status: "pending" | "approved"

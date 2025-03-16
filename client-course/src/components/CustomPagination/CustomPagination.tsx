@@ -42,7 +42,7 @@ const CustomPagination: React.FC<PaginationProps> = ({
   };
 
   const visiblePages = getVisiblePages();
-
+  
   return (
     <Pagination className="mt-4 justify-center">
       <PaginationPrevious

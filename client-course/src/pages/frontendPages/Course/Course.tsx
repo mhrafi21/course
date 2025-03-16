@@ -12,12 +12,13 @@ const Course: React.FC = () => {
 
   // Get values from URL, defaulting to page 1 & limit 6
   const page = Number(searchParams.get("page")) || 1;
-  const limit = Number(searchParams.get("limit")) || 10;
+  const limit = Number(searchParams.get("limit")) || 5;
 
   const {
     data: courses,
     isLoading,
     isError,
+    isFetching,
   } = useGetCoursesQuery({
     page,
     limit,
@@ -35,25 +36,30 @@ const Course: React.FC = () => {
         !courses.data ||
         (courses.data.data.length < 0 && <p>No courses found.</p>)}
       <h1 className="mb-4">Course Page</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {isLoading &&
-          Array.from({ length: limit }, (_, index) => index).map((_, index) => (
-            <Card key={index}>
-              <div className="flex items-center space-x-4 min-h-[135px]">
-                <div className="space-y-2 w-full px-4">
-                  <Skeleton className="h-4 w-[250px]" />
-                  <Skeleton className="h-4 w-[200px]" />
-                  <Skeleton className="h-4 w-full" />
+      {isLoading || isFetching ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: limit }, (_, index) => index).map(
+            (_, index) => (
+              <Card key={index}>
+                <div className="flex items-center space-x-4 min-h-[135px]">
+                  <div className="space-y-2 w-full px-4">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                    <Skeleton className="h-4 w-full" />
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            )
+          )}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {courses?.data?.data.map((course: ICourse) => (
+            <CourseCard key={course._id} course={course} />
           ))}
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {courses?.data?.data.map((course: ICourse) => (
-          <CourseCard key={course._id} course={course} />
-        ))}
-      </div>
+        </div>
+      )}
+
       {/* Reusable Pagination Component */}
       <CustomPagination
         currentPage={page}

@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { useEffect, useState } from "react";
 import { useGetCoursesQuery } from "@/redux/baseApi";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import CustomPagination from "@/components/CustomPagination/CustomPagination";
 import { Label } from "@/components/ui/label";
+import { ICourse } from "@/interface";
 
 export default function CoursePage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -224,20 +225,22 @@ export default function CoursePage() {
                 </Card>
               ))
             ) : Courses?.data?.data?.length > 0 ? (
-              Courses?.data?.data?.map((course) => (
-                <Card key={course._id} className="flex gap-2 shadow-none">
+              Courses?.data?.data?.map((course :ICourse) => (
+                <Link key={course._id} to={`/course/${course?.slug}`}>
+                                <Card className="flex gap-2 shadow-none">
                   <img
-                    src={course.thumbnail}
-                    alt={course.title}
+                    src={course?.thumbnail}
+                    alt={course?.title}
                     className="w-48 h-40 object-cover rounded-l-lg"
                   />
                   <CardContent className="p-4">
-                    <h3 className="text-lg font-semibold">{course.title}</h3>
+                    <h3 className="text-lg font-semibold">{course?.title}</h3>
                     <p className="text-sm text-gray-600">
-                      {course.description}
+                      {course?.description}
                     </p>
                   </CardContent>
                 </Card>
+                </Link>
               ))
             ) : (
               <p className="text-center text-gray-500 col-span-full">

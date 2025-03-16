@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router";
+import { NavLink } from "react-router";
 import { VscMenu } from "react-icons/vsc";
 import { MdOutlineManageHistory, MdDashboard } from "react-icons/md";
 import { IoMdNotificationsOutline } from "react-icons/io";
@@ -45,7 +45,7 @@ const notifications = [
   { id: 4, message: "Your subscription is about to expire", time: "3 hours ago", unread: false },
 ];
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <div>
       <header className="p-4 flex justify-between items-center shadow-md bg-white dark:bg-gray-900 sticky top-0 z-50 w-full">

@@ -8,6 +8,14 @@
   padding: 0;
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Hides scrollbar in Webkit browsers (Chrome, Safari) */
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* Hides scrollbar in IE & Edge */
+  scrollbar-width: none; /* Hides scrollbar in Firefox */
+}
+
 html{
   scroll-behavior: smooth;
 }
