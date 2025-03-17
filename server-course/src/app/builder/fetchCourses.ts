@@ -9,6 +9,7 @@ export const fetchCourses = async (
   const totalData = await Course.countDocuments(query);
   const data = await Course.find(query)
     .populate('instructor', 'username')
+    .populate("lectures")
     .sort(sortQuery)
     .skip(skip)
     .limit(limit)

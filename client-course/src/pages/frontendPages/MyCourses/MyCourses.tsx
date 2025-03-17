@@ -4,10 +4,19 @@ import { Progress } from "@/components/ui/progress";
 import { CheckCircle, PlayCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useGetEnrollCourseQuery } from "@/redux/baseApi";
+import { Link, useNavigate } from "react-router";
 
 const MyCourses = () => {
+    const navigate = useNavigate();
     const {data: enrolledCourses} = useGetEnrollCourseQuery(undefined);
     // console.log(enrolledCourses?.data);
+
+    const handleCourseLecture = (course_slug: string) => {
+
+        navigate(`/course/lecture/${course_slug}`);
+
+    }
+
   return (
     <div className="flex justify-center items-center">
       <div className="container">
@@ -29,9 +38,11 @@ const MyCourses = () => {
                   <CardDescription className="text-sm text-gray-500 mt-1">{course?.progress}% completed</CardDescription>
                 </div>
                 <motion.div>
-                  <Button size="lg" className="w-full  text-white">
+                    <Link to={`//`}>
+                  <Button  size="lg" className="w-full  text-white">
                     <PlayCircle className="mr-2" /> Continue Learning
                   </Button>
+                    </Link>
                 </motion.div>
               </CardContent>
             </Card>
