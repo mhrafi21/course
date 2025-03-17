@@ -2,23 +2,22 @@ import nodemailer from 'nodemailer';
 import config from '../config';
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com' as string,
-    port: 25,
-    secure: config.NODE_ENV === 'production',
-    auth: {
-        user: '12mhrafi@gmail.com' as string,
-        pass: 'dszm lfza hcqx kwoe' as string
-    }
-})
+  host: 'smtp.gmail.com' as string,
+  port: 25,
+  secure: config.NODE_ENV === 'production',
+  auth: {
+    user: '12mhrafi@gmail.com' as string,
+    pass: 'dszm lfza hcqx kwoe' as string,
+  },
+});
 
 export const sendEmail = async (to: string, subject: string, text: string) => {
-
-    await transporter.sendMail({
-        from: "12mhrafi@gmail.com",
-        to,
-        subject,
-        text,
-        html: `
+  await transporter.sendMail({
+    from: '12mhrafi@gmail.com',
+    to,
+    subject,
+    text,
+    html: `
                 Dear user,
 
                 We wanted to let you know that your password was successfully changed. If you made this change, no further action is needed.
@@ -35,8 +34,6 @@ export const sendEmail = async (to: string, subject: string, text: string) => {
                 Best regards,
                 [12mhrafi@gmail.com
             
-           `
-    })
-
-}
-
+           `,
+  });
+};

@@ -16,12 +16,12 @@ const moduleRoutes = [
     route: courseRoutes,
   },
   {
-    path: "/payment",
-    route: paymentRoutes
+    path: '/payment',
+    route: paymentRoutes,
   },
   {
-    path: "/enroll",
-    route: enrolmentRoutes
+    path: '/enroll',
+    route: enrolmentRoutes,
   },
 ];
 

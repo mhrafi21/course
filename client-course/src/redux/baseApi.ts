@@ -7,7 +7,7 @@ import { logout, setToken } from "./features/Auth/authSlice";
 const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://server-course-sigma.vercel.app/api",
+  baseUrl:"http://localhost:5000/api",
   prepareHeaders(headers, { getState }) {
     const state = getState() as RootState;
     const token = state?.auth?.token;

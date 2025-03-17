@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  BookOpenText,
   Cloud,
   CreditCard,
   Github,
@@ -35,7 +36,7 @@ import UserAvatar from "../Avatar/UserAvatar";
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/Auth/authSlice";
 import { TSToken } from "@/interface";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 interface UserDropdownProps {
   user: TSToken;
@@ -57,16 +58,22 @@ const UserDropdownMenu: React.FC<UserDropdownProps> = ({ user }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="absolute -right-5 w-56">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
-
+          <DropdownMenuLabel className="text-center">{user?.username}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem >
               <User />
               <span>Profile</span>
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
+              <NavLink to="/my-courses">
+            <DropdownMenuItem>
+
+            <BookOpenText />
+              <span>My Courses</span>
+              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+            </DropdownMenuItem>
+              </NavLink>
             <DropdownMenuItem>
               <CreditCard />
               <span>Billing</span>
