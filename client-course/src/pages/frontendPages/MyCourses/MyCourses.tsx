@@ -4,18 +4,23 @@ import { Progress } from "@/components/ui/progress";
 import { CheckCircle, PlayCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useGetEnrollCourseQuery } from "@/redux/baseApi";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
+import { ICourse, IUser } from "@/interface";
+
+type TEnrollment = {
+  _id?:string
+  userId: IUser;
+  courseId: ICourse;
+  paymentId: string;
+  enrolledAt?: Date;
+  progress?: number;
+}
+
 
 const MyCourses = () => {
-    const navigate = useNavigate();
+
     const {data: enrolledCourses} = useGetEnrollCourseQuery(undefined);
-    // console.log(enrolledCourses?.data);
-
-    const handleCourseLecture = (course_slug: string) => {
-
-        navigate(`/course/lecture/${course_slug}`);
-
-    }
+    console.log(enrolledCourses?.data);
 
   return (
     <div className="flex justify-center items-center">
@@ -26,7 +31,7 @@ const MyCourses = () => {
           <p className="text-gray-600 text-lg">You have successfully enrolled in the following courses:</p>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {enrolledCourses?.data?.map((course: any, index: number) => (
+          {enrolledCourses?.data?.map((course: TEnrollment, index: number) => (
             <Card key={index} className=" shadow-lg rounded-xl">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold ">{course?.courseId?.title}</CardTitle>
@@ -38,7 +43,7 @@ const MyCourses = () => {
                   <CardDescription className="text-sm text-gray-500 mt-1">{course?.progress}% completed</CardDescription>
                 </div>
                 <motion.div>
-                    <Link to={`//`}>
+                    <Link to={`/my-course/${course?.courseId?.slug}`}>
                   <Button  size="lg" className="w-full  text-white">
                     <PlayCircle className="mr-2" /> Continue Learning
                   </Button>

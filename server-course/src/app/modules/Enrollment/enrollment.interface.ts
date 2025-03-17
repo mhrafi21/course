@@ -10,3 +10,12 @@ export interface IEnrolment extends Document {
   enrolledAt?: Date;
   progress?: number; // percentage of course completion
 }
+
+
+// type TEnrollment = {
+//   userId: string;
+//   courseId: string;
+//   paymentId: string;
+//   enrolledAt?: Date;
+//   progress?: number;
+// }

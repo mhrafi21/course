@@ -20,6 +20,7 @@ import ResetPassword from "@/pages/frontendPages/ResetPassword/ResetPassword";
 import CheckoutPage from "@/components/paymentForm/Checkout";
 import SearchingCourse from "@/pages/frontendPages/SearchingCourse/SearchingCourse";
 import MyCourses from "@/pages/frontendPages/MyCourses/MyCourses";
+import MyCourse from "@/pages/frontendPages/MyCourses/MyCourse";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/my-courses",
         Component: () => <MyCourses />
+      },
+      {
+        path: "/my-course/:slug",
+        Component: () => <MyCourse />
       },
       {
         path: "/course/:slug/",
