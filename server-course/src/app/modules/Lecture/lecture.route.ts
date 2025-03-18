@@ -5,7 +5,7 @@ const router = Router();
 
 router.post("/create-lecture", lectureControllers.addLecture);
 
-router.get("/:lecture_slug", lectureControllers.getLectureById);
+router.get("/:lectureId", lectureControllers.getLectureById);
 
 
 export const lectureRoutes = router;

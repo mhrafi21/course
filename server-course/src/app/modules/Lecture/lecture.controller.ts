@@ -19,7 +19,7 @@ const addLecture = catchAsync(async(req,res) => {
 })
 
 const getLectureById = catchAsync(async(req,res)=>{
-    const result = await lectureServices.getLectureByIdFromDB(req.params.lecture_slug as string);
+    const result = await lectureServices.getLectureByIdFromDB(req.params.lectureId as string);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,

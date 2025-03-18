@@ -11,6 +11,7 @@ export interface ICourse  {
     language: string;
     lesson: number;
     slug: string;
+    lectures: string[];
     instructor?: string;
     studentEnrolled?: string[];
     status: "pending" | "approved"
@@ -50,4 +51,14 @@ export interface TToken {
 }
 export interface AuthState {
     token:  string;
+}
+
+export interface ILectureProps  {
+    _id?: string;
+    title?: string;
+    lecture_slug?: string;
+    videoUrl?: string;
+    duration?: number;
+    description?: string;
+    courseId?: ICourse | string;
 }

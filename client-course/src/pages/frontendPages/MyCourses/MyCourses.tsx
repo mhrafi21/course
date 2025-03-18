@@ -43,7 +43,7 @@ const MyCourses = () => {
                   <CardDescription className="text-sm text-gray-500 mt-1">{course?.progress}% completed</CardDescription>
                 </div>
                 <motion.div>
-                    <Link to={`/my-course/${course?.courseId?.slug}`}>
+                    <Link to={`/my-course/${course?.courseId?.slug}/${course.courseId.lectures[0]}`}>
                   <Button  size="lg" className="w-full  text-white">
                     <PlayCircle className="mr-2" /> Continue Learning
                   </Button>

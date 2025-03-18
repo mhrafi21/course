@@ -163,6 +163,16 @@ export const baseApi = createApi({
         method: "GET",
       })
     }),
+
+    getLectureById: builder.query({
+      query: (lectureId) => ({
+        url: `/lectures/${lectureId}`,
+        method: "GET",
+      })
+    }),
+
+
+
     updateProductById: builder.mutation({
       query: ({ productId, ...product }) => ({
         url: `/courses/${productId}`,
@@ -194,6 +204,7 @@ export const {
   useCreatePaymentMutation,
   useCreateEnrollMutation,
   useGetEnrollCourseQuery,
+  useGetLectureByIdQuery,
   // useGetEnrollByStudentIdQuery,
   // useGetEnrollByCourseIdQuery,
   // useGetEnrollByInstructorIdQuery,

@@ -1,7 +1,4 @@
 import mongoose, { Document } from 'mongoose';
-
-
-
 export interface ICourse extends Document {
   title: string;
   category: string;

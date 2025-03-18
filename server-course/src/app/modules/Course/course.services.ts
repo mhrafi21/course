@@ -51,7 +51,7 @@ const approvedCourseInDB = async (courseId: string) => {
 
 const getCourseByIdFromDB = async (slug: string) => {
   // logic here
-  const result = await Course.findOne({ slug });
+  const result = await Course.findOne({ slug }).populate("lectures", "title description videoUrl");
   return result;
 };
 

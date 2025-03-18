@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         Component: () => <MyCourses />
       },
       {
-        path: "/my-course/:slug",
+        path: "/my-course/:slug/:lectureId",
         Component: () => <MyCourse />
       },
       {

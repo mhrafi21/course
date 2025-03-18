@@ -35,11 +35,12 @@ const addLectureIntoDB = async(payload: ILecture) => {
 
 }
 
-const getLectureByIdFromDB = async(lecture_slug: string) => {
-    const lecture = await Lecture.findOne({lecture_slug});
-    if(!lecture){
-        throw new AppError(httpStatus.NOT_FOUND,"Lecture not found");
-    }
+const getLectureByIdFromDB = async(lectureId: string) => {
+
+    const lecture = await Lecture.findById(lectureId)
+    // if(!lecture){
+    //     throw new AppError(httpStatus.NOT_FOUND,"Lecture not found");
+    // }
     return lecture;
 }
 
