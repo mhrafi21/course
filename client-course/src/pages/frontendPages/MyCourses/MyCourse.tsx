@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   useGetCourseBySlugQuery,
+  useGetEnrollCourseQuery,
   useGetLectureByIdQuery,
 } from "@/redux/baseApi";
 import { useEffect, useState } from "react";
@@ -20,7 +21,8 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 const MyCourse = () => {
   const { slug, lectureId } = useParams<{ slug: string; lectureId?: string }>();
   const navigate = useNavigate();
-  const { data: enrolledCourse } = useGetCourseBySlugQuery(slug);
+  const {data: enrolledCourse} = useGetEnrollCourseQuery(slug);
+  const { data: course } = useGetCourseBySlugQuery(slug);
   const {
     data: lectureData,
     isLoading,
@@ -34,11 +36,11 @@ const MyCourse = () => {
 
   useEffect(() => {
     if (lectureData?.data) {
-      setSelectedLecture(lectureData.data);
+      setSelectedLecture(lectureData?.data);
     }
   }, [lectureData]);
 
-  const lectures = enrolledCourse?.data?.lectures || [];
+  const lectures = course?.data?.lectures || [];
   const currentIndex = lectures.findIndex(
     (lec: ILectureProps) => lec?._id === selectedLecture?._id
   );
@@ -57,7 +59,7 @@ const MyCourse = () => {
           <CardHeader>
             <CardTitle className="flex justify-between items-center border-b py-3">
               <span>Running Lectures</span>
-              <span>{enrolledCourse?.data?.lectures.length}</span>
+              <span>  { course?.data?.lectures.length}</span>
             </CardTitle>
           </CardHeader>
           <CardContent>

@@ -154,14 +154,16 @@ export const baseApi = createApi({
         url: "/enroll/create-enroll",
         method: "POST",
         body: enrollInfo,
-      })
+      }),
+      invalidatesTags: [{ type: "courses", id: "LIST" }],
     }),
 
     getEnrollCourse: builder.query({
       query: () => ({
         url: "/enroll",
         method: "GET",
-      })
+      }),
+      providesTags: [{ type: "courses", id: "LIST" }],
     }),
 
     getLectureById: builder.query({

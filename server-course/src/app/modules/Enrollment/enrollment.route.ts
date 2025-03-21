@@ -11,4 +11,6 @@ router.get(
   auth((USER_ROLE.student as TURole) || (USER_ROLE.admin as TURole)),
   enrollmentControllers.getUserEnrollments,
 );
+router.put("/complete-lecture", enrollmentControllers.completeLecture);
+
 export const enrolmentRoutes = router;

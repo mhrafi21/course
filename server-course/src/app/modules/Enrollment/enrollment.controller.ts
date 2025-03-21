@@ -28,7 +28,18 @@ const getUserEnrollments = catchAsync(async (req, res) => {
   });
 });
 
+const completeLecture = catchAsync( async(req,res) => {
+  const result = await enrollmentsServices.completeLectureIntoDB(req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Lecture completed successfully!',
+    data: result,
+  });
+});
+
 export const enrollmentControllers = {
   enrollMentUser,
   getUserEnrollments,
+  completeLecture
 };

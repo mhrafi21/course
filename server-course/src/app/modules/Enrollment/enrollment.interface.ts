@@ -8,14 +8,7 @@ export interface IEnrolment extends Document {
   courseId: Schema.Types.ObjectId;
   paymentId: string;
   enrolledAt?: Date;
+  totalLectures?: number;
+  completedLectures?: Schema.Types.ObjectId[];
   progress?: number; // percentage of course completion
 }
-
-
-// type TEnrollment = {
-//   userId: string;
-//   courseId: string;
-//   paymentId: string;
-//   enrolledAt?: Date;
-//   progress?: number;
-// }

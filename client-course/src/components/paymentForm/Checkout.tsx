@@ -12,13 +12,16 @@ import { useNavigate, useSearchParams } from "react-router";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useCreateEnrollMutation, useCreatePaymentMutation } from "@/redux/baseApi";
+import {
+  useCreateEnrollMutation,
+  useCreatePaymentMutation,
+} from "@/redux/baseApi";
 import { useAuth } from "@/hooks/useAuth";
 
 const CheckoutPage = () => {
-  const [createPayment] = useCreatePaymentMutation(undefined);
-  const [createEnrollment] = useCreateEnrollMutation(undefined);
-  const {  user } = useAuth();
+  const [createPayment, { isLoading }] = useCreatePaymentMutation(undefined);
+  const [createEnrollment, {isLoading: enrollmentLoading}] = useCreateEnrollMutation(undefined);
+  const { user } = useAuth();
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
@@ -43,26 +46,29 @@ const CheckoutPage = () => {
   });
 
   const onSubmit = async (info: any) => {
-
     if (!stripe || !elements) return;
     console.log(info);
     try {
-      const {data} = await createPayment({ userId: uId, courseId: cId });
+      const { data } = await createPayment({ userId: uId, courseId: cId });
       // console.log(data)
-      const resStripe = await stripe.confirmCardPayment(data?.data?.clientSecret, {
-        payment_method: { card: elements.getElement(CardElement)! },
-      });
+      const resStripe = await stripe.confirmCardPayment(
+        data?.data?.clientSecret,
+        {
+          payment_method: { card: elements.getElement(CardElement)! },
+        }
+      );
 
       // enrolment api call
-    
-
 
       if (resStripe.error) {
         toast.error(resStripe.error.message);
         return;
       } else {
-
-        const enrollRes = await createEnrollment({ userId: user?.id, courseId: cId, paymentId: resStripe?.paymentIntent?.id }).unwrap();
+        const enrollRes = await createEnrollment({
+          userId: user?.id,
+          courseId: cId,
+          paymentId: resStripe?.paymentIntent?.id,
+        }).unwrap();
         if (!enrollRes.success) {
           toast.error("Failed to enroll", enrollRes);
           return;
@@ -73,7 +79,7 @@ const CheckoutPage = () => {
         return;
       }
     } catch (error: any) {
- console.error(error.data)
+      console.error(error.data);
       toast.error(error?.data?.message || "Already Enrolled");
     }
   };
@@ -126,8 +132,8 @@ const CheckoutPage = () => {
                 errors={errors}
               />
               <CardElement className="border p-2 rounded" />
-              <Button size="lg" type="submit" className="w-full">
-                Place Order
+              <Button size="lg" type="submit" disabled={ enrollmentLoading} className="w-full">
+                 { enrollmentLoading ? "Place order ..." : "Place Order"}
               </Button>
             </form>
           </CardContent>
